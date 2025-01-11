@@ -1,0 +1,9 @@
+services:
+  markdown-renderer:
+    build: .
+    container_name: markdown-renderer
+    volumes:
+      - .:/app/weblog
+    environment:
+      - NODE_ENV=production
+    command: ["node", "weblog/index.js"]
