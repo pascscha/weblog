@@ -1,0 +1,26 @@
+[
+    {
+        "timestamp": 1606863632,
+        "title": "ETH Study Materials",
+        "description": "A collection of study material I created back when I was tutoring Computer Science at ETH Zürich",
+        "link": "/weblog/1-eth-study-materials/"
+    },
+    {
+        "timestamp": 1688421664,
+        "title": "Finding 19 Vulnerabilities in one Messenger",
+        "description": "When I started this project, I thought there would be little to find. However, it didn't take long for my initial assumptions to be proven wrong.",
+        "link": "/weblog/2-sharekey-cryptography-review/"
+    },
+    {
+        "timestamp": 1721222075,
+        "title": "Breaking Military Grade Encryption to Animate my Name",
+        "description": "Getting into the weeds of my flashy website banner, that simulates a padding-oracle attack on AES-CBC.",
+        "link": "/weblog/3-breaking-military-grade-encryption/"
+    },
+    {
+        "timestamp": 1729162800,
+        "title": "Quantum Apocalypse?",
+        "description": "NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a technical intuition on the actual impact of this, going beyond the hype and buzzwords.",
+        "link": "/weblog/4-quantum-apocalypse/"
+    }
+]
