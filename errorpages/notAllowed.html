@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Forbidden - Pascal Schärli</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 80vh;
+        }
+
+        .error-icon {
+            font-size: 72px;
+            color: var(--solarized-orange);
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 36px;
+            color: var(--solarized-base01);
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            font-size: 18px;
+            color: var(--solarized-base00);
+            margin-bottom: 30px;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--solarized-blue);
+            color: var(--solarized-base3);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: var(--solarized-cyan);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="home-link" title="Home">
+                <span class="site-title home-link">Pascal Schärli</span>
+            </a>
+            <a href="/" class="home-link" title="Home">
+                <i class="fas fa-home"></i>
+            </a>
+        </nav>
+    </header>
+    <div id="content">
+        <div class="error-container">
+            <div class="error-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h1 class="error-title">403 - Forbidden</h1>
+            <p class="error-message">Sorry, you don't have permission to access this page.</p>
+            <a href="/" class="home-button">Go to Homepage</a>
+        </div>
+    </div>
+    <footer>
+        <div id="social-links">
+            <a href="https://linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://github.com/pascscha" class="social-link" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://stackoverflow.com/users/10046273/pascscha" class="social-link" title="Stack Overflow">
+                <i class="fab fa-stack-overflow"></i>
+            </a>
+            <a href="mailto:mail@pascscha.ch" class="social-link" title="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </footer>
+</body>
+
+</html>
