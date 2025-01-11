@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Welcome to the source code of my website! -->
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pascal Schärli - Cryptography Engineer</title>
+    <meta name="description"
+        content="Pascal Schärli's latest research and projects on cryptography and cyber security.">
+    <meta name="keywords" content="Pascal Schärli, cyber security, cryptography, encryption, research, ETH Zürich">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/img/favicon/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/img/favicon/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="152x152" href="/img/favicon/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/favicon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="1024x1024" href="/img/favicon/favicon-1024x1024.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- SEO -->
+    <meta property="og:title" content="Pascal Schärli - Cryptography Engineer">
+    <meta property="og:description"
+        content="Pascal Schärli's latest research and projects on cryptography and cyber security.">
+    <meta property="og:image" content="https://pascscha.ch/img/social-preview.webp">
+    <meta property="og:url" content="https://pascscha.ch">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script src="/js/banner/MilitaryGradeEncryptor.js" nonce="xe8EE+3vwrhdNlClEWwHKw=="></script>
+    <script src="/js/banner/paddingOracleDemo.js" nonce="xe8EE+3vwrhdNlClEWwHKw=="></script>
+    <script src="/js/banner/animationHelpers.js" nonce="xe8EE+3vwrhdNlClEWwHKw=="></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js"
+        nonce="xe8EE+3vwrhdNlClEWwHKw=="
+        integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/brands.min.js"
+        nonce="xe8EE+3vwrhdNlClEWwHKw=="
+        integrity="sha512-N5K6sQXjzT79tR16zvBu7B0AqvYtHKvk3+eKuQWoVNQDGU5kR9W8OP3CTYtm3vVM2EtObrmtm0Jup17F718OyA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/solid.min.js"
+        nonce="xe8EE+3vwrhdNlClEWwHKw=="
+        integrity="sha512-L2znesU64H/rvdnaD4WBaRAmEcGvhBsVLXygPkhpgpUwcgjymD4amy68shdgZgLiIvyvV/vHRXAM4mTV8xqp+Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
+
+    <!-- Banner Font -->
+    <style>
+        @font-face {
+            font-family: 'VT323';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihIEF2isfFJU.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="banner">
+        <!-- This is a demo for a padding oracle attack on AES in CBC mode. Have a look at js/banner/MilitaryGradeEncryptor.js to which I've intentionally added a padding oracle, which is then used by js/banner/paddingOracleDemo.js to retrieve the plaintext letter-by-letter, which, in this case, is "Pascal Schärli" -->
+        <h1 id="banner-title">&nbsp;</h1>
+        <div id="banner-diagram"></div>
+        <div id="replay-circle">
+            <i class="fas fa-redo-alt"></i>
+        </div>
+        <div id="info-circle">
+            ?
+            <div id="info-tooltip">This is a demo for a padding oracle attack on AES in CBC mode. Click here for more
+                information.</div>
+        </div>
+        <div id="scroll-arrow">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+
+    <div id="content">
+        <div id="about-me">
+            <img src="/img/pascscha.webp" alt="Pascal Schärli" id="profile-image">
+            <p>
+                Hi, I'm Pascal. A cyber security master's graduate from ETH Zürich, now a dedicated Cryptography
+                Engineer with a strong passion for coding and scripting.
+            </p>
+        </div>
+
+        <div id="blog-posts">
+            <h2>
+                My Projects
+                <a href="/weblog/rss" class="rss-link" title="RSS Feed">
+                    <i class="fas fa-rss"></i>
+                </a>
+            </h2>
+
+            <div class="post-list">
+                                                <article class="blog-post">
+                    <div class="post-image">
+                        <img src="/weblog/4-quantum-apocalypse/img/thumbnail.webp" alt="Thumbnail for Quantum Apocalypse?">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            2024-10-17                        </div>
+                        <h3 class="post-title">
+                            <a href="/weblog/4-quantum-apocalypse/">
+                                Quantum Apocalypse?                            </a>
+                        </h3>
+                        <p class="post-summary">
+                            NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a technical intuition on the actual impact of this, going beyond the hype and buzzwords.                        </p>
+                    </div>
+                </article>
+                                <article class="blog-post">
+                    <div class="post-image">
+                        <img src="/weblog/3-breaking-military-grade-encryption/img/thumbnail.webp" alt="Thumbnail for Breaking Military Grade Encryption to Animate my Name">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            2024-07-17                        </div>
+                        <h3 class="post-title">
+                            <a href="/weblog/3-breaking-military-grade-encryption/">
+                                Breaking Military Grade Encryption to Animate my Name                            </a>
+                        </h3>
+                        <p class="post-summary">
+                            Getting into the weeds of my flashy website banner, that simulates a padding-oracle attack on AES-CBC.                        </p>
+                    </div>
+                </article>
+                                <article class="blog-post">
+                    <div class="post-image">
+                        <img src="/weblog/2-sharekey-cryptography-review/img/thumbnail.webp" alt="Thumbnail for Finding 19 Vulnerabilities in one Messenger">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            2023-07-04                        </div>
+                        <h3 class="post-title">
+                            <a href="/weblog/2-sharekey-cryptography-review/">
+                                Finding 19 Vulnerabilities in one Messenger                            </a>
+                        </h3>
+                        <p class="post-summary">
+                            When I started this project, I thought there would be little to find. However, it didn&#039;t take long for my initial assumptions to be proven wrong.                        </p>
+                    </div>
+                </article>
+                                <article class="blog-post">
+                    <div class="post-image">
+                        <img src="/weblog/1-eth-study-materials/img/thumbnail.webp" alt="Thumbnail for ETH Study Materials">
+                    </div>
+                    <div class="post-content">
+                        <div class="post-date">
+                            2020-12-02                        </div>
+                        <h3 class="post-title">
+                            <a href="/weblog/1-eth-study-materials/">
+                                ETH Study Materials                            </a>
+                        </h3>
+                        <p class="post-summary">
+                            A collection of study material I created back when I was tutoring Computer Science at ETH Zürich                        </p>
+                    </div>
+                </article>
+                
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="social-links">
+            <a href="mailto:mail@pascscha.ch" class="social-link" title="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com/pascscha" class="social-link" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="https://mastodon.social/@pascscha" class="social-link" title="Mastodon">
+                <i class="fab fa-mastodon"></i>
+            </a>
+            <a href="https://twitter.com/pascscha" class="social-link" title="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </div>
+        <div id="footer-links">
+            <a href="/privacy" class="footer-link">Privacy Policy</a>
+        </div>
+    </footer>
+
+</body>
+
+<script nonce="xe8EE+3vwrhdNlClEWwHKw==">
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // Add click event to the info circle
+        document.getElementById('info-circle').addEventListener('click', function () {
+            window.location.href = 'weblog/3-breaking-military-grade-encryption/';
+        });
+
+        // Animate Padding oracle
+        getDiagramElements('banner-diagram').then(
+            (diagramElements) => {
+                // Banner Title
+                diagramElements["T"] = document.getElementById("banner-title")
+
+                function showAnimation() {
+                    // Can be any string with < 15 utf-8 encoded bytes
+                    let encryptor = new MilitaryGradeEncryptor("Pascal Schärli");
+
+                    encryptor.getEncryptedSecret().then((ciphertext) => {
+                        decryptBlockWithPaddingOracle(ciphertext, encryptor, diagramElements, 100);
+                    });
+                }
+
+                showAnimation();
+
+                document.getElementById('replay-circle').addEventListener('click', function () {
+                    showAnimation();
+                });
+
+            }
+        )
+
+        // Scroll arrow
+        const scrollArrow = document.getElementById('scroll-arrow');
+
+        scrollArrow.addEventListener('click', function () {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 100) {
+                scrollArrow.style.opacity = '0';
+            } else {
+                scrollArrow.style.opacity = '1';
+            }
+        });
+    })
+</script>
+
+
+<!-- SEO -->
+<script type="application/ld+json" nonce="xe8EE+3vwrhdNlClEWwHKw==">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Pascal Schärli",
+      "url": "https://pascscha.ch",
+      "jobTitle": "Cryptography Engineer",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "ETH Zürich"
+      },
+      "sameAs": [
+        "https://linkedin.com/in/pascscha",
+        "https://github.com/pascscha",
+        "https://stackoverflow.com/users/10046273/pascscha"
+      ]
+    }
+    </script>
+
+</html>

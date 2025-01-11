@@ -3,6 +3,8 @@ import json
 from bs4 import BeautifulSoup
 import argparse
 import os
+import shutil
+from distutils.dir_util import copy_tree
 from datetime import datetime
 
 
@@ -110,17 +112,21 @@ def process_inventory(inventory_file, template_file, root, output_root):
             metadata["next_title"] = ""
 
         # Set up input and output file paths
-        markdown_file = os.path.join(root, entry["link"].lstrip("/"), "index.md")
-        output_file = os.path.join(output_root, entry["link"].lstrip("/"), "index.html")
+        input_folder =  os.path.join(root, entry["link"].lstrip("/"))
+        output_folder =  os.path.join(output_root, entry["link"].lstrip("/"))
 
-        # Ensure the output directory exists
-        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        # Copy input folder to output folder
+        shutil.copytree(input_folder, output_folder)
+
+        markdown_file = os.path.join(input_folder, "index.md")
+        output_file = os.path.join(output_folder, "index.html")
 
         # Convert markdown to HTML
         convert_markdown_to_html(markdown_file, template_file, output_file, metadata)
 
-        print(f"Processed: {entry['title']}", output_file)
 
+
+        print(f"Processed: {entry['title']}", output_file)
 
 def main():
     parser = argparse.ArgumentParser(
@@ -145,6 +151,27 @@ def main():
     args = parser.parse_args()
 
     root = args.root
+
+    print("Copy static files")
+    if os.path.exists(args.output):
+        # Loop through all the files and directories in the output folder
+        for filename in os.listdir(args.output):
+            file_path = os.path.join(args.output, filename)
+            if os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+            else:
+                os.remove(file_path)
+
+    for filename in os.listdir("static"):
+        src_path = os.path.join("static", filename)
+        dst_path = os.path.join(args.output, filename)
+        if os.path.isdir(src_path):
+            shutil.copytree(src_path, dst_path)
+        else:
+            shutil.copy2(src_path, dst_path)
+
+
+
     inventory_file = os.path.join(root, "inventory.json")
     template_file = os.path.join(args.templates, "template.html")
 
