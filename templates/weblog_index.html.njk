@@ -33,23 +33,23 @@
     <meta property="og:url" content="https://pascscha.ch">
     <meta name="twitter:card" content="summary_large_image">
 
-    <script src="/js/banner/MilitaryGradeEncryptor.js" nonce="xe8EE+3vwrhdNlClEWwHKw=="></script>
-    <script src="/js/banner/paddingOracleDemo.js" nonce="xe8EE+3vwrhdNlClEWwHKw=="></script>
-    <script src="/js/banner/animationHelpers.js" nonce="xe8EE+3vwrhdNlClEWwHKw=="></script>
+    <script src="/js/banner/MilitaryGradeEncryptor.js"></script>
+    <script src="/js/banner/paddingOracleDemo.js"></script>
+    <script src="/js/banner/animationHelpers.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js"
-        nonce="xe8EE+3vwrhdNlClEWwHKw=="
+       
         integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/brands.min.js"
-        nonce="xe8EE+3vwrhdNlClEWwHKw=="
+       
         integrity="sha512-N5K6sQXjzT79tR16zvBu7B0AqvYtHKvk3+eKuQWoVNQDGU5kR9W8OP3CTYtm3vVM2EtObrmtm0Jup17F718OyA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/solid.min.js"
-        nonce="xe8EE+3vwrhdNlClEWwHKw=="
+       
         integrity="sha512-L2znesU64H/rvdnaD4WBaRAmEcGvhBsVLXygPkhpgpUwcgjymD4amy68shdgZgLiIvyvV/vHRXAM4mTV8xqp+Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
 
@@ -102,67 +102,26 @@
             </h2>
 
             <div class="post-list">
-                                                <article class="blog-post">
+                {% for post in posts %}
+                <article class="blog-post">
                     <div class="post-image">
-                        <img src="/weblog/4-quantum-apocalypse/img/thumbnail.webp" alt="Thumbnail for Quantum Apocalypse?">
+                        <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
                     </div>
                     <div class="post-content">
                         <div class="post-date">
-                            2024-10-17                        </div>
+                            {{ post.date }}
+                        </div>
                         <h3 class="post-title">
-                            <a href="/weblog/4-quantum-apocalypse/">
-                                Quantum Apocalypse?                            </a>
+                            <a href="{{ post.link }}">
+                                {{ post.title }}
+                            </a>
                         </h3>
                         <p class="post-summary">
-                            NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a technical intuition on the actual impact of this, going beyond the hype and buzzwords.                        </p>
+                            {{ post.description }}
+                        </p>
                     </div>
                 </article>
-                                <article class="blog-post">
-                    <div class="post-image">
-                        <img src="/weblog/3-breaking-military-grade-encryption/img/thumbnail.webp" alt="Thumbnail for Breaking Military Grade Encryption to Animate my Name">
-                    </div>
-                    <div class="post-content">
-                        <div class="post-date">
-                            2024-07-17                        </div>
-                        <h3 class="post-title">
-                            <a href="/weblog/3-breaking-military-grade-encryption/">
-                                Breaking Military Grade Encryption to Animate my Name                            </a>
-                        </h3>
-                        <p class="post-summary">
-                            Getting into the weeds of my flashy website banner, that simulates a padding-oracle attack on AES-CBC.                        </p>
-                    </div>
-                </article>
-                                <article class="blog-post">
-                    <div class="post-image">
-                        <img src="/weblog/2-sharekey-cryptography-review/img/thumbnail.webp" alt="Thumbnail for Finding 19 Vulnerabilities in one Messenger">
-                    </div>
-                    <div class="post-content">
-                        <div class="post-date">
-                            2023-07-04                        </div>
-                        <h3 class="post-title">
-                            <a href="/weblog/2-sharekey-cryptography-review/">
-                                Finding 19 Vulnerabilities in one Messenger                            </a>
-                        </h3>
-                        <p class="post-summary">
-                            When I started this project, I thought there would be little to find. However, it didn&#039;t take long for my initial assumptions to be proven wrong.                        </p>
-                    </div>
-                </article>
-                                <article class="blog-post">
-                    <div class="post-image">
-                        <img src="/weblog/1-eth-study-materials/img/thumbnail.webp" alt="Thumbnail for ETH Study Materials">
-                    </div>
-                    <div class="post-content">
-                        <div class="post-date">
-                            2020-12-02                        </div>
-                        <h3 class="post-title">
-                            <a href="/weblog/1-eth-study-materials/">
-                                ETH Study Materials                            </a>
-                        </h3>
-                        <p class="post-summary">
-                            A collection of study material I created back when I was tutoring Computer Science at ETH Zürich                        </p>
-                    </div>
-                </article>
-                
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -175,14 +134,17 @@
             <a href="https://github.com/pascscha" class="social-link" title="GitHub">
                 <i class="fab fa-github"></i>
             </a>
-            <a href="https://www.linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
             <a href="https://mastodon.social/@pascscha" class="social-link" title="Mastodon">
                 <i class="fab fa-mastodon"></i>
             </a>
-            <a href="https://twitter.com/pascscha" class="social-link" title="Twitter">
-                <i class="fab fa-twitter"></i>
+            <a href="https://bsky.app/profile/pascscha.ch" class="social-link" title="Bluesky">
+                <i class="fab fa-bluesky"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="/weblog/rss" class="social-link" title="RSS">
+                <i class="fas fa-rss"></i>
             </a>
         </div>
         <div id="footer-links">
@@ -192,8 +154,7 @@
 
 </body>
 
-<script nonce="xe8EE+3vwrhdNlClEWwHKw==">
-
+<script>
     window.addEventListener('DOMContentLoaded', (event) => {
         // Add click event to the info circle
         document.getElementById('info-circle').addEventListener('click', function () {
@@ -244,9 +205,8 @@
     })
 </script>
 
-
 <!-- SEO -->
-<script type="application/ld+json" nonce="xe8EE+3vwrhdNlClEWwHKw==">
+<script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
@@ -260,7 +220,9 @@
       "sameAs": [
         "https://linkedin.com/in/pascscha",
         "https://github.com/pascscha",
-        "https://stackoverflow.com/users/10046273/pascscha"
+        "https://stackoverflow.com/users/10046273/pascscha",
+        "https://bsky.app/profile/pascscha.ch",
+        "https://mastodon.social/@pascscha"
       ]
     }
     </script>

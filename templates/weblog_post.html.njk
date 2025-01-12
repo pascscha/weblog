@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><!-- TITLE_PLACEHOLDER --></title>
-    <meta name="description" content="<!-- DESCRIPTION_PLACEHOLDER -->">
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}">
     <meta name="keywords" content="Pascal Schärli, cyber security, cryptography, encryption, research, ETH Zürich">
 
     <!-- Icons -->
@@ -23,10 +23,10 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <!-- SEO -->
-    <meta property="og:title" content="<!-- TITLE_PLACEHOLDER -->">
-    <meta property="og:description" content="<!-- DESCRIPTION_PLACEHOLDER -->">
-    <meta property="og:image" content="https://pascscha.ch<!-- CURRENT_PATH_PLACEHOLDER -->img/banner.webp">
-    <meta property="og:url" content="https://pascscha.ch<!-- CURRENT_PATH_PLACEHOLDER -->">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="https://pascscha.ch{{ current_path }}img/banner.webp">
+    <meta property="og:url" content="https://pascscha.ch{{ current_path }}">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -51,20 +51,53 @@
 
         <div id="content">
             <div class="banner" style="background-image: url('img/banner.webp')"></div>
-            <div id="post-info"><span id="post-date"><!-- DATE_PLACEHOLDER --></span><span id="read-time"></span></div>
-            <div id="rendered-content">
-                <!-- CONTENT_PLACEHOLDER -->
+            <div id="post-info">
+                <span id="post-date">{{ date }}</span>
+                <span id="read-time">{{ read_time }}</span>
+                <div class="post-social-links">
+                    {% for platform, url in socials %}
+                    {% if url %}
+                    <a href="{{ url }}" class="social-share-link" title="View on {{ platform | capitalize }}"
+                        target="_blank">
+                        <i class="fab fa-{{ platform }}"></i>
+                    </a>
+                    {% endif %}
+                    {% endfor %}
+                    <a href="#" class="social-share-link" title="Copy link" onclick="copyCurrentURL(event)">
+                        <i class="fas fa-share"></i>
+                        <div id="copy-tooltip">URL copied to clipboard!</div>
+                    </a>
+                </div>
             </div>
+
+            <div id="rendered-content">
+                {{ content | safe }}
+            </div>
+
             <div id="post-navigation">
-                <a id="prev-post" class="nav-link" href="<!-- PREV_LINK_PLACEHOLDER -->">
-                    <!-- PREV_TITLE_PLACEHOLDER -->
-                </a>
-                <a id="next-post" class="nav-link" href="<!-- NEXT_LINK_PLACEHOLDER -->">
-                    <!-- NEXT_TITLE_PLACEHOLDER -->
-                </a>
+                <div class="nav-item">
+                    {% if prev_link and prev_link != '#' %}
+                    <a id="prev-post" class="nav-link" href="{{ prev_link }}">
+                        {{ prev_title }}
+                    </a>
+                    {% else %}
+                    <span class="nav-link empty"></span>
+                    {% endif %}
+                </div>
+
+                <div class="nav-item">
+                    {% if next_link and next_link != '#' %}
+                    <a id="next-post" class="nav-link" href="{{ next_link }}">
+                        {{ next_title }}
+                    </a>
+                    {% else %}
+                    <span class="nav-link empty"></span>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
+
     <footer>
         <div id="social-links">
             <a href="mailto:mail@pascscha.ch" class="social-link" title="Email">
@@ -73,14 +106,17 @@
             <a href="https://github.com/pascscha" class="social-link" title="GitHub">
                 <i class="fab fa-github"></i>
             </a>
-            <a href="https://www.linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
             <a href="https://mastodon.social/@pascscha" class="social-link" title="Mastodon">
                 <i class="fab fa-mastodon"></i>
             </a>
-            <a href="https://twitter.com/pascscha" class="social-link" title="Twitter">
-                <i class="fab fa-twitter"></i>
+            <a href="https://bsky.app/profile/pascscha.ch" class="social-link" title="Bluesky">
+                <i class="fab fa-bluesky"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="/weblog/rss" class="social-link" title="RSS">
+                <i class="fas fa-rss"></i>
             </a>
         </div>
         <div id="footer-links">
@@ -88,9 +124,6 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"
-        integrity="sha512-6yoqbrcLAHDWAdQmiRlHG4+m0g/CT/V9AGyxabG8j7Jk8j3r3K6due7oqpiRMZqcYe9WM2gPcaNNxnl2ux+3tA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/js/weblog/blog.js"></script>
 </body>
 
