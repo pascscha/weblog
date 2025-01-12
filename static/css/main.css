@@ -268,12 +268,12 @@ nav {
 
 .rss-link {
   font-size: 1.2rem;
-  color: var(--solarized-orange);
+  color: var(--solarized-base01);
   transition: color 0.3s ease;
 }
 
 .rss-link:hover {
-  color: var(--solarized-red);
+  color: var(--solarized-orange);
 }
 
 .blog-post {
