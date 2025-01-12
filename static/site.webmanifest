@@ -1,0 +1,21 @@
+{
+    "name": "Pascal Schärli",
+    "short_name": "Pascal",
+    "description": "Pascal Schärli's latest research and projects on cryptography and cyber security.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fdf6e3",
+    "theme_color": "#657b83",
+    "icons": [
+        {
+            "src": "/img/favicon/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/img/favicon/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

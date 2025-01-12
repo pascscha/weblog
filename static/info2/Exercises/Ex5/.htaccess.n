@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Übungsstunde 05"
+AuthUserFile /nas/pascscha/.htpasswd
+Require valid-user

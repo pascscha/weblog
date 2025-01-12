@@ -6,6 +6,8 @@ const cheerio = require('cheerio');
 const hljs = require('highlight.js');
 const { program } = require('commander');
 const dayjs = require('dayjs');
+const nunjucks = require('nunjucks');
+
 
 const imageWithCaptionExtension = {
   type: 'output',
@@ -38,18 +40,18 @@ function getYouTubeId(url) {
 // Combined extension for both images and YouTube links
 const mediaExtension = {
   type: 'output',
-  filter: function(text) {
+  filter: function (text) {
     const $ = cheerio.load(text);
-    
+
     // Process all img tags
     $('img').each((i, elem) => {
       const $img = $(elem);
       const src = $img.attr('src');
       const alt = $img.attr('alt');
-      
+
       // Check if this is a YouTube link
       const youtubeId = getYouTubeId(src);
-      
+
       if (youtubeId) {
         // Create YouTube embed
         const iframe = `<iframe 
@@ -60,11 +62,11 @@ const mediaExtension = {
           referrerpolicy="strict-origin-when-cross-origin"
           allowfullscreen="">
         </iframe>`.replace(/\s+/g, ' ').trim();
-        
+
         const $container = $('<div class="image-container"></div>')
           .append(iframe)
           .append(`<div class="image-description">${alt}</div>`);
-        
+
         $img.replaceWith($container);
       } else if (alt) {
         // Regular image processing
@@ -78,16 +80,8 @@ const mediaExtension = {
   }
 };
 
-// Initialize showdown converter
-const converter = new showdown.Converter({
-  extensions: [
-    shodownKatex(),
-    mediaExtension
-  ]
-});
-
-// Add this extension to handle code blocks
-converter.addExtension({
+// Code block extension definition
+const codeBlockExtension = {
   type: 'output',
   filter: function (text) {
     const $ = cheerio.load(text);
@@ -117,40 +111,44 @@ converter.addExtension({
 
     return $.html();
   }
-});
+};
 
+// Initialize showdown converter
+const converter = new showdown.Converter({
+  extensions: [
+    shodownKatex(),
+    mediaExtension,
+    codeBlockExtension
+  ]
+});
 
 async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, metadata) {
   try {
     // Read markdown and template
     const markdownContent = await fs.readFile(markdownFile, 'utf-8');
-    let templateContent = await fs.readFile(templateFile, 'utf-8');
 
     // Convert markdown to HTML
     let htmlContent = converter.makeHtml(markdownContent);
 
     // Calculate read time
     const wordCount = markdownContent.split(/\s+/).length;
-    const readTime = Math.max(1, Math.round(wordCount / 200));
+    const readTime = Math.max(1, Math.round(wordCount / 130));
 
-    // Replace placeholders
-    const replacements = {
-      '<!-- TITLE_PLACEHOLDER -->': metadata.title,
-      '<!-- DESCRIPTION_PLACEHOLDER -->': metadata.description,
-      '<!-- CURRENT_PATH_PLACEHOLDER -->': metadata.link,
-      '<!-- DATE_PLACEHOLDER -->': metadata.date,
-      '<!-- PREV_LINK_PLACEHOLDER -->': metadata.prev_link,
-      '<!-- PREV_TITLE_PLACEHOLDER -->': metadata.prev_title,
-      '<!-- NEXT_LINK_PLACEHOLDER -->': metadata.next_link,
-      '<!-- NEXT_TITLE_PLACEHOLDER -->': metadata.next_title,
-      '<!-- CONTENT_PLACEHOLDER -->': htmlContent,
-      '<span id="read-time"></span>': `<span id="read-time">${readTime} min read</span>`
-    };
 
-    let finalHtml = templateContent;
-    for (const [placeholder, value] of Object.entries(replacements)) {
-      finalHtml = finalHtml.replace(new RegExp(placeholder, 'g'), value);
-    }
+    // Render template with nunjucks
+    const finalHtml = nunjucks.render(templateFile, {
+      title: metadata.title,
+      description: metadata.description,
+      current_path: metadata.link,
+      date: metadata.date,
+      prev_link: metadata.prev_link,
+      prev_title: metadata.prev_title,
+      next_link: metadata.next_link,
+      next_title: metadata.next_title,
+      content: htmlContent,
+      read_time: `${readTime} min read`,
+      socials: metadata.socials || ''
+    });
 
     // Write the final HTML
     await fs.writeFile(outputFile, finalHtml);
@@ -181,11 +179,8 @@ async function copyDirectory(src, dest) {
   }
 }
 
-async function processInventory(inventoryFile, templateFile, root, outputRoot) {
+async function processInventory(inventory, templateFile, root, outputRoot) {
   try {
-    // Read inventory
-    const inventory = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
-
     // Process each entry
     for (let i = 0; i < inventory.length; i++) {
       const entry = inventory[i];
@@ -236,6 +231,98 @@ async function clearDirectory(directory) {
   }
 }
 
+async function generateIndexPage(inventory, templateFile, outputRoot) {
+  try {
+    // Sort posts by date (newest first)
+    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
+
+    // Format posts data for the template
+    const posts = sortedPosts.map(post => ({
+      title: post.title,
+      description: post.description,
+      date: dayjs(post.timestamp * 1000).format('YYYY-MM-DD'),
+      link: post.link,
+      thumbnail: `${post.link}img/thumbnail.webp` // Assuming this is your thumbnail path convention
+    }));
+
+    // Render template with nunjucks
+    const finalHtml = nunjucks.render(templateFile, {
+      title: "Pascal Schärli - Cryptography Engineer", // Or make this configurable
+      posts: posts
+    });
+
+    // Write the index.html file
+    const outputFile = path.join(outputRoot, 'index.html');
+    await fs.writeFile(outputFile, finalHtml);
+
+    console.log('Generated index page:', outputFile);
+  } catch (error) {
+    console.error('Error generating index page:', error);
+    throw error;
+  }
+}
+
+async function generateRssFeed(inventory, outputRoot) {
+  try {
+    // Sort posts by date (newest first)
+    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
+
+    // Current date in RSS format
+    const currentDate = new Date().toUTCString();
+
+    // Build RSS XML content
+    let rssContent = `<?xml version="1.0" encoding="UTF-8" ?><rss version="2.0">
+  <channel>
+    <title>Pascal Schärli</title>
+    <link>https://pascscha.ch</link>
+    <description>Hi, I'm Pascal. A cyber security master's graduate from ETH Zürich, now a dedicated Cryptography Engineer with a strong passion for coding and scripting.</description>
+    <language>en-us</language>
+    <lastBuildDate>${currentDate}</lastBuildDate>
+
+`;
+
+    // Add items
+    for (const post of sortedPosts) {
+      const pubDate = new Date(post.timestamp * 1000).toUTCString();
+      const link = `https://pascscha.ch${post.link}/`;
+
+      rssContent += `    <item>
+      <title>${escapeXml(post.title)}</title>
+      <link>${link}</link>
+      <description>${escapeXml(post.description)}</description>
+      <pubDate>${pubDate}</pubDate>
+      <guid>${link}</guid>
+    </item>
+`;
+    }
+
+    rssContent += `  </channel>
+</rss>`;
+
+    // Create weblog directory if it doesn't exist
+    const weblogDir = path.join(outputRoot, 'weblog');
+    await fs.mkdir(weblogDir, { recursive: true });
+
+    // Write the RSS file
+    const outputFile = path.join(weblogDir, 'rss');
+    await fs.writeFile(outputFile, rssContent);
+
+    console.log('Generated RSS feed:', outputFile);
+  } catch (error) {
+    console.error('Error generating RSS feed:', error);
+    throw error;
+  }
+}
+
+// Helper function to escape XML special characters
+function escapeXml(unsafe) {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
 async function main() {
   program
     .option('-r, --root <path>', 'Root directory of the blog', 'weblog/dynamic')
@@ -244,6 +331,7 @@ async function main() {
     .parse(process.argv);
 
   const options = program.opts();
+
 
   try {
     console.log('Copy static files');
@@ -269,18 +357,19 @@ async function main() {
 
     // Process inventory
     const inventoryFile = path.join(options.root, 'inventory.json');
-    const templateFile = path.join(options.templates, 'template.html');
+    const postTemplateFile = path.join(options.templates, 'weblog_post.html.njk');
+    const indexTemplateFile = path.join(options.templates, 'weblog_index.html.njk');
 
-    // Verify files exist
-    await Promise.all([
-      fs.access(inventoryFile),
-      fs.access(templateFile),
-      fs.access(options.root)
-    ]).catch(error => {
-      throw new Error(`Required file not found: ${error.path}`);
-    });
+    const inventory = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
 
-    await processInventory(inventoryFile, templateFile, options.root, options.output);
+    // Generate individual posts
+    await processInventory(inventory, postTemplateFile, options.root, options.output);
+
+    // Generate index page
+    await generateIndexPage(inventory, indexTemplateFile, options.output);
+
+    // Generate RSS feed
+    await generateRssFeed(inventory, options.output);
 
   } catch (error) {
     console.error('Error:', error);

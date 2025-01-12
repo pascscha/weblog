@@ -97,3 +97,18 @@ document.addEventListener('DOMContentLoaded', function () {
     highlightTOC();
     window.addEventListener('scroll', highlightTOC);
 });
+
+function copyCurrentURL(e) {
+    e.preventDefault();
+    navigator.clipboard.writeText(window.location.href)
+        .then(() => {
+            const tooltip = document.getElementById('copy-tooltip');
+            tooltip.style.display = 'block';
+            setTimeout(() => {
+                tooltip.style.display = 'none';
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy URL:', err);
+        });
+}

@@ -1,0 +1,11 @@
+# Contact information for reporting security vulnerabilities
+Contact: mailto:security@pascscha.ch
+
+# Encryption key
+Encryption: https://www.pascscha.ch/keys/publickey.mail@pascscha.ch-936edd583134f5b47394d59b185b07c986a3052d.asc
+
+# Preferred languages for communication
+Preferred-Languages: en, de
+
+# Expires field indicating validity of this file
+Expires: 2025-12-31
