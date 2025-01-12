@@ -4,7 +4,7 @@ Quantum computers are rapidly transitioning from science fiction to reality, and
 
 This post accompanies my session at [BaselOne](https://baselone.org/) from 2024-10-17. You can find the PDF of my slides here:
 
-[![Click here to view the Slides as PDF](img/slides-thumbnail.webp)](assets/Pascal-Schaerli_Quantum-Apocalypse.pdf)
+[![Click here to view the Slides as PDF](img/slides-thumbnail.webp)](https://media.githubusercontent.com/media/pascscha/weblog/refs/heads/main/dynamic/weblog/4-quantum-apocalypse/assets/Pascal-Schaerli_Quantum-Apocalypse.pdf)
 
 ## Why we care today
 
