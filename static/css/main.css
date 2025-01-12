@@ -175,6 +175,21 @@ nav {
   display: block;
 }
 
+#copy-tooltip {
+  position: absolute;
+  background-color: var(--solarized-base2);
+  color: var(--solarized-base01);
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 400px;
+  display: none;
+  white-space: nowrap;
+}
+
+.share-button {
+  position: relative;
+}
+
 /* Content */
 .banner {
   width: 100%;
@@ -484,6 +499,27 @@ footer {
 
 .social-link:hover {
   color: var(--solarized-blue);
+}
+
+.post-social-links {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.social-share-link {
+  color: inherit;
+  margin-left: 0.5em;
+  text-decoration: none;
+  font-size: 1.2em; /* Make icons larger */
+}
+
+.social-share-link i {
+  font-size: 1.4em; /* Make icons even larger */
+  vertical-align: middle; /* Align icons with text */
+}
+
+.social-share-link:hover {
+  opacity: 0.7;
 }
 
 #footer-links {
