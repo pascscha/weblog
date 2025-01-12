@@ -323,6 +323,90 @@ function escapeXml(unsafe) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
 }
+
+async function generateSitemap(inventory, outputRoot) {
+  try {
+    // Sort posts by date (newest first)
+    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
+
+    // Build sitemap XML content
+    let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`;
+
+    // Add entries for each post
+    for (const post of sortedPosts) {
+      const lastmod = dayjs(post.timestamp * 1000).format('YYYY-MM-DD');
+      const loc = `https://pascscha.ch${post.link}/`;
+
+      sitemapContent += `    <url>
+        <loc>${loc}</loc>
+        <lastmod>${lastmod}</lastmod>
+        <priority>0.80</priority>
+    </url>
+`;
+    }
+
+    sitemapContent += `</urlset>`;
+
+    // Create weblog directory if it doesn't exist
+    const weblogDir = path.join(outputRoot, 'weblog');
+    await fs.mkdir(weblogDir, { recursive: true });
+
+    // Write the sitemap file
+    const outputFile = path.join(weblogDir, 'sitemap.xml');
+    await fs.writeFile(outputFile, sitemapContent);
+
+    console.log('Generated sitemap:', outputFile);
+  } catch (error) {
+    console.error('Error generating sitemap:', error);
+    throw error;
+  }
+}
+
+// Add this new function
+async function processPdfFiles(outputDir) {
+  const processDirectory = async (dir) => {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+
+      if (entry.isDirectory()) {
+        await processDirectory(fullPath);
+      } else if (entry.name.endsWith('.pdf')) {
+        // Get relative path from output directory
+        const relativePath = path.relative(outputDir, fullPath);
+
+        // Determine if it's in weblog or not-weblog
+        let githubPath;
+        if (relativePath.startsWith('weblog/')) {
+          githubPath = `https://media.githubusercontent.com/media/pascscha/weblog/refs/heads/main/dynamic/${relativePath}`;
+        } else {
+          githubPath = `https://media.githubusercontent.com/media/pascscha/weblog/refs/heads/main/static/${relativePath}`;
+        }
+
+        // Create HTML redirect content
+        const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="refresh" content="0; url=${githubPath}">
+</head>
+<body>
+  <p>Redirecting to <a href="${githubPath}">${githubPath}</a></p>
+</body>
+</html>`;
+
+        // Delete PDF and create HTML file
+        await fs.unlink(fullPath);
+        await fs.writeFile(fullPath.replace('.pdf', '.html'), htmlContent);
+      }
+    }
+  };
+
+  await processDirectory(outputDir);
+}
+
 async function main() {
   program
     .option('-r, --root <path>', 'Root directory of the blog', 'weblog/dynamic')
@@ -370,6 +454,13 @@ async function main() {
 
     // Generate RSS feed
     await generateRssFeed(inventory, options.output);
+
+    // Generate sitemap
+    await generateSitemap(inventory, options.output);
+
+    // Add this new step at the end
+    console.log('Processing PDF files...');
+    await processPdfFiles(options.output);
 
   } catch (error) {
     console.error('Error:', error);
