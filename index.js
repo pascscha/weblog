@@ -132,7 +132,7 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, met
 
     // Calculate read time
     const wordCount = markdownContent.split(/\s+/).length;
-    const readTime = Math.max(1, Math.round(wordCount / 130));
+    const readTime = Math.max(1, Math.round(wordCount / 150));
 
 
     // Render template with nunjucks
