@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<rss version="2.0">
+  <channel>
+    <title>Cryptography News</title>
+    <description>Cryptography news, aggregated from different sources</description>
+    <link>https://pascscha.ch/rssnews</link>
+    <lastBuildDate>Sun, 12 Jan 2025 21:00:02 </lastBuildDate>
+  </channel>
+</rss>

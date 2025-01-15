@@ -186,6 +186,21 @@ nav {
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+  #copy-tooltip {
+    position: fixed; /* Fixed position instead of absolute */
+    bottom: 20px; /* Position from bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center alignment */
+    max-width: 90%; /* Prevent overflow */
+    font-size: 0.9em; /* Slightly smaller text */
+    z-index: 1000; /* Ensure it's above other content */
+    text-align: center; /* Center the text */
+    white-space: normal; /* Allow text wrapping */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Add shadow for visibility */
+  }
+}
+
 .share-button {
   position: relative;
 }
@@ -507,10 +522,17 @@ footer {
 }
 
 .social-share-link {
-  color: inherit;
+  color: var(--solarized-base00); /* Match text color */
   margin-left: 0.5em;
   text-decoration: none;
-  font-size: 1.2em; /* Make icons larger */
+  font-size: 1.2em;
+}
+
+/* Ensure color consistency on mobile */
+@media (max-width: 768px) {
+  .social-share-link {
+    color: var(--solarized-base00); /* Explicitly set for mobile */
+  }
 }
 
 .social-share-link i {
