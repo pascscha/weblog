@@ -41,15 +41,12 @@
 
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js"
-       
         integrity="sha512-NeFv3hB6XGV+0y96NVxoWIkhrs1eC3KXBJ9OJiTFktvbzJ/0Kk7Rmm9hJ2/c2wJjy6wG0a0lIgehHjCTDLRwWw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/brands.min.js"
-       
         integrity="sha512-N5K6sQXjzT79tR16zvBu7B0AqvYtHKvk3+eKuQWoVNQDGU5kR9W8OP3CTYtm3vVM2EtObrmtm0Jup17F718OyA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/solid.min.js"
-       
         integrity="sha512-L2znesU64H/rvdnaD4WBaRAmEcGvhBsVLXygPkhpgpUwcgjymD4amy68shdgZgLiIvyvV/vHRXAM4mTV8xqp+Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer" async defer></script>
 
@@ -105,7 +102,9 @@
                 {% for post in posts %}
                 <article class="blog-post">
                     <div class="post-image">
-                        <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
+                        <a href="{{ post.link }}">
+                            <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
+                        </a>
                     </div>
                     <div class="post-content">
                         <div class="post-date">
