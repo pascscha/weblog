@@ -110,20 +110,26 @@ body {
     margin: 0;
     height: 100%;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+        "Helvetica Neue", Arial, sans-serif;
     background-color: var(--bg-color);
     transition: background-color 0.3s ease, color 0.3s ease;
     color: var(--text-primary);
     line-height: 1.5;
 }
 
+
 /* Typography */
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
     color: var(--fg3);
     margin-top: 2rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
 }
 
 h1 {
@@ -131,8 +137,8 @@ h1 {
     padding-bottom: 0.5rem;
 }
 
-h2 {
-    margin-top: 3rem;
+p {
+    margin-bottom: var(--spacing-md);
 }
 
 a {
@@ -174,6 +180,31 @@ nav {
     color: var(--blue-dim);
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.username {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
 /* Button Styles */
 .btn {
     display: inline-block;
@@ -183,19 +214,19 @@ nav {
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s;
-    text-decoration: none; /* Consistent button style */
+    text-decoration: none;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
     transition: background-color 0.3s ease, color 0.3s ease;
-    color: var(--bg); /* Or a contrasting color */
+    color: var(--bg);
 }
 
 .btn-secondary {
     background-color: var(--secondary-color);
     transition: background-color 0.3s ease, color 0.3s ease;
-    color: var(--bg); /* Or a contrasting color */
+    color: var(--bg);
 }
 
 .btn:hover {
@@ -215,6 +246,57 @@ nav {
 
 .btn-icon:hover {
     color: var(--primary-color);
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-control {
+    display: inline-block;
+    width: 100%;
+    border: 1px solid var(--surface-color);
+    border-radius: var(--border-radius);
+    background-color: var(--surface-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--text-primary);
+}
+
+input.form-control {
+    border: 1px solid var(--text-secondary);
+    padding: 0.75em;
+}
+
+/* Grid */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+
+/* Cards */
+.card {
+    background-color: var(--surface-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Consistent shadow */
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
 }
 
 /* Info circle and tooltip */
@@ -248,6 +330,46 @@ nav {
 #info-circle:hover #info-tooltip,
 #replay-circle:hover #replay-tooltip {
     display: block;
+}
+
+/* Toast styles */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--success-color);
+    color: var(--bg);
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Consistent shadow */
+    transform: translateY(150%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: var(--spacing-sm);
+}
+
+.mt-2 {
+    margin-top: var(--spacing-md);
+}
+
+.mt-3 {
+    margin-top: var(--spacing-lg);
 }
 
 /* Content */
@@ -286,9 +408,9 @@ footer {
 
 /* Media Queries */
 @media (max-width: 1100px) {
-  #content {
-    max-width: 80%;
-  }
+    #content {
+        max-width: 80%;
+    }
 }
 
 @media (max-width: 768px) {
