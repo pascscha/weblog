@@ -37,12 +37,16 @@
         integrity="sha512-Jk4AqjWsdSzSWCSuQTfYRIF84Rq/eV0G2+tu07byYwHcbTGfdmLrHjUSwvzp5HvbiqK4ibmNwdcG49Y5RGYPTg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" rel="preload" as="style" />
     <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/blog.css">
 </head>
 
 <body>
     <header>
-        <nav><a href="/" class="home-link" title="Home"><span class="site-title home-link">Pascal Schärli</span></a><a
-                href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></nav>
+        <nav><a href="/" class="home-link" title="Home"><span class="site-title home-link">Pascal Schärli</span></a>
+        <button id="theme-toggle" class="btn-icon">
+                <i class="fas fa-circle-half-stroke"></i>
+        </button>
+        <a href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></nav>
     </header>
     <div id="content-wrapper">
         <div id="sidebar"><button id="toc-toggle">☰</button>
@@ -50,7 +54,7 @@
         </div>
 
         <div id="content">
-            <div class="banner" style="background-image: url('img/banner.webp')"></div>
+            <div class="weblogbanner" style="background-image: url('img/banner.webp')"></div>
             <div id="post-info">
                 <span id="post-date">{{ date }}</span>
                 <span id="read-time">{{ read_time }}</span>
@@ -125,6 +129,7 @@
     </footer>
 
     <script src="/js/weblog/blog.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

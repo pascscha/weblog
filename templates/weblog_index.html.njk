@@ -38,6 +38,7 @@
     <script src="/js/banner/animationHelpers.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
 
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/fontawesome.min.js"
@@ -93,9 +94,11 @@
         <div id="blog-posts">
             <h2>
                 My Projects
-                <a href="/weblog/rss" class="rss-link" title="RSS Feed">
-                    <i class="fas fa-rss"></i>
-                </a>
+                <div>
+                    <button id="theme-toggle" class="btn-icon">
+                            <i class="fas fa-circle-half-stroke"></i>
+                    </button>
+                </div>
             </h2>
 
             <div class="post-list">
@@ -225,5 +228,6 @@
       ]
     }
     </script>
+    <script src="/js/main.js"></script>
 
 </html>
