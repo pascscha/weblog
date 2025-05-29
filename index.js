@@ -7,7 +7,79 @@ const hljs = require('highlight.js');
 const { program } = require('commander');
 const dayjs = require('dayjs');
 const nunjucks = require('nunjucks');
+const htmlMinifier = require('html-minifier-terser');
+const CleanCSS = require('clean-css');
+const UglifyJS = require('uglify-js');
 
+// Add this utility function to create unminified copies
+const createUnminifiedCopy = async (filePath, content) => {
+  const dir = path.dirname(filePath);
+  const ext = path.extname(filePath);
+  const basename = path.basename(filePath, ext);
+  const unminifiedPath = path.join(dir, `${basename}.unminified${ext}`);
+
+  await fs.writeFile(unminifiedPath, content);
+
+  // Calculate relative path from output directory
+  const relativePath = path.relative('weblog/html', unminifiedPath); // Use options.output
+  return relativePath;
+};
+
+// Add this function to minify files and create unminified copies
+async function minifyStaticFiles(directory) {
+  try {
+    const extensions = ['.html', '.css', '.js'];
+    const entries = await fs.readdir(directory, { withFileTypes: true, recursive: true });
+
+    for (const entry of entries) {
+      if (!entry.isFile()) continue;
+
+      const fullPath = path.join(entry.parentPath, entry.name);
+      const ext = path.extname(entry.name).toLowerCase();
+
+      if(fullPath.startsWith("weblog/html/info")) continue;
+      if (!extensions.includes(ext)) continue;
+
+      console.log("minifying", fullPath)
+
+      try {
+        const content = await fs.readFile(fullPath, 'utf8');
+        // Create unminified copy and get its name
+        const unminifiedFilename = await createUnminifiedCopy(fullPath, content);
+
+        let minified;
+        switch (ext) {
+          case '.html':
+            minified = await htmlMinifier.minify(content, {
+              collapseWhitespace: true,
+              removeComments: true,
+              minifyCSS: true,
+              minifyJS: true,
+              removeRedundantAttributes: true,
+            });
+            minified = `<!-- Unminified: https://schaerli.org/${unminifiedFilename} -->\n${minified}`;
+            break;
+          case '.css':
+            minified = new CleanCSS({}).minify(content).styles;
+            minified = `/* Unminified: https://schaerli.org/${unminifiedFilename} */\n${minified}`;
+            break;
+          case '.js':
+            const result = UglifyJS.minify(content);
+            if (result.error) throw result.error;
+            minified = result.code;
+            minified = `// Unminified: https://schaerli.org/${unminifiedFilename}\n${minified}`;
+            break;
+        }
+
+        await fs.writeFile(fullPath, minified);
+      } catch (err) {
+        console.error(`Error minifying ${fullPath}:`, err);
+      }
+    }
+  } catch (err) {
+    console.error('Error in minifyStaticFiles:', err);
+  }
+}
 
 const imageWithCaptionExtension = {
   type: 'output',
@@ -461,6 +533,10 @@ async function main() {
     // Add this new step at the end
     console.log('Processing PDF files...');
     await processPdfFiles(options.output);
+
+    // Add this after all other processing
+    console.log('Minifying static files...');
+    await minifyStaticFiles(options.output);
 
   } catch (error) {
     console.error('Error:', error);
