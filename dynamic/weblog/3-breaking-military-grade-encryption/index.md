@@ -36,7 +36,7 @@ This is where a significant vulnerability can arise. If an attacker can submit s
 
 ## The Vulnerable "MilitaryGradeEncryptor"
 
-To illustrate all of this, we can now finally have a look at our [MilitaryGradeEncryptor](/js/banner/MilitaryGradeEncryptor.js). The object holds some plaintext and a secret key and has a function to encrypt that plaintext using the key. Our goal will be to find out the value of that plaintext without directly accessing it or the secret key. Feel free to look through the source code yourself, just don't trust the misinformed comments within, they are for your entertainment only.
+To illustrate all of this, we can now finally have a look at our [MilitaryGradeEncryptor](/js/banner/MilitaryGradeEncryptor.unminified.js). The object holds some plaintext and a secret key and has a function to encrypt that plaintext using the key. Our goal will be to find out the value of that plaintext without directly accessing it or the secret key. Feel free to look through the source code yourself, just don't trust the misinformed comments within, they are for your entertainment only.
 
 The one part that we are going to look at together is the function that introduces the vulnerability. The class exposes an `isValidCiphertext` function, which tries to decrypt a ciphertext, and will return whether there was a padding error or not. In reality a vulnerable applications might not expose such a function as directly as I've done here. But there are many ways to detect padding errors, maybe the server will not catch the error and return a bad status code, or there might be timing based attacks that would allow the attacker to construct such an oracle themselves.
 
@@ -108,7 +108,7 @@ And now comes the time to shine for the original initialization vector that we o
 
 ![Substituting the initialization vector with the original one reveals the plaintext.](img/AES-CBC-6.svg)
 
-This entire process is implemented in [paddingOracleDemo.js](/js/banner/paddingOracleDemo.js), feel free to have a look. It used the `isValidCiphertext` function of the `MilitaryGradeEncryptor` to perform a padding oracle attack as described here. I'm also doing a trick where I'm not only using the original initialization vector at the end to reveal the full plaintext at once, but I'm immediately updating the plaintext after each new block cipher output byte we learned, which results in the letter-by-letter animation you see in my banner. The script also updates the SVG diagram within my banner with the relevant information, updating it in real time.
+This entire process is implemented in [paddingOracleDemo.js](/js/banner/paddingOracleDemo.unminified.js), feel free to have a look. It used the `isValidCiphertext` function of the `MilitaryGradeEncryptor` to perform a padding oracle attack as described here. I'm also doing a trick where I'm not only using the original initialization vector at the end to reveal the full plaintext at once, but I'm immediately updating the plaintext after each new block cipher output byte we learned, which results in the letter-by-letter animation you see in my banner. The script also updates the SVG diagram within my banner with the relevant information, updating it in real time.
 
 The attack discussed here works for the first block of the ciphertext. However it can be extended to work with multiple blocks, just view the previous ciphertext block as an initialzation vector, and repeat the attack for every block, which is also implemented in the padding oracle demo.
 
