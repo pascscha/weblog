@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pascscha.ch/sitemap.xml
+Sitemap: https://schaerli.org/sitemap.xml

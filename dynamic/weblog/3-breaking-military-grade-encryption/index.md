@@ -1,6 +1,6 @@
 # Breaking Military-Grade Encryption to Animate My Name
 
-When you visit [my website](https://pascscha.ch), you're greeted with an unconventional banner - a diagram of an encryption scheme, animated to reveal my name letter by letter. While I must admit that the green hacker font is a bit flashy, there is some actual meaningful cryptography going on under the hood. It's a live demonstration of a padding oracle attack against a (purposefully) vulnerable script I wrote that employs "Military Grade" encryption.
+When you visit [my website](https://schaerli.org), you're greeted with an unconventional banner - a diagram of an encryption scheme, animated to reveal my name letter by letter. While I must admit that the green hacker font is a bit flashy, there is some actual meaningful cryptography going on under the hood. It's a live demonstration of a padding oracle attack against a (purposefully) vulnerable script I wrote that employs "Military Grade" encryption.
 
 ## Military Grade Encryption
 
