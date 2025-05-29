@@ -15,7 +15,10 @@
     "showdown-katex": "^0.8.0",
     "highlight.js": "^11.10.0",
     "punycode": "^2.1.1",
-    "nunjucks": "^3.2.2"
+    "nunjucks": "^3.2.2",
+    "html-minifier-terser": "^7.2.0",
+    "clean-css": "^5.3.3",
+    "uglify-js": "^3.19.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
