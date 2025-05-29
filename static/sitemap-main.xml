@@ -5,4 +5,14 @@
         <lastmod>2024-07-16</lastmod>
         <priority>1.00</priority>
     </url>
+    <url>
+        <loc>https://schaerli.org/privacy/</loc>
+        <lastmod>2025-05-29</lastmod>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://schaerli.org/info2/abTreePractice/</loc>
+        <lastmod>2024-05-29</lastmod>
+        <priority>0.80</priority>
+    </url>
 </urlset>
