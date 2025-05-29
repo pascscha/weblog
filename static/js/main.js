@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeTheme() {
         const savedTheme = themeStorage.getTheme();
         if (savedTheme) {
-            setTheme(savedTheme);
+            themeStorage.setTheme(savedTheme);
             return;
         }
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-        if (!getTheme()) {
+        if (!themeStorage.getTheme()) {
             setTheme(e.matches ? 'light' : 'dark');
         }
     });
