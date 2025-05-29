@@ -1,43 +1,52 @@
 // Theme
+const themeStorage = {
+    key: 'user-theme-preference',
+    
+    // Save theme preference
+    setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      try {
+        localStorage.setItem(this.key, theme);
+      } catch (e) {
+        console.warn("LocalStorage unavailable. Theme preference won't persist.");
+      }
+    },
+  
+    // Retrieve saved theme
+    getTheme() {
+      try {
+        return localStorage.getItem(this.key);
+      } catch (e) {
+        console.warn("LocalStorage access error");
+        return null;
+      }
+    }
+  };
+
 document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('i');
 
-    // Function to set theme with domain-wide cookie
-    function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-
-        // Set cookie for root domain with 1 year expiry
-        const date = new Date();
-        date.setFullYear(date.getFullYear() + 1);
-        document.cookie = `theme=${theme}; expires=${date.toUTCString()}; path=/; domain=.schaerli.org`;
-    }
-
-    // Function to get theme from cookie
-    function getTheme() {
-        const match = document.cookie.match(/theme=([^;]+)/);
-        return match ? match[1] : null;
-    }
 
     // Initialize theme
     function initializeTheme() {
-        const savedTheme = getTheme();
+        const savedTheme = themeStorage.getTheme();
         if (savedTheme) {
             setTheme(savedTheme);
             return;
         }
 
         if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-            setTheme('light');
+            themeStorage.setTheme('light');
         } else {
-            setTheme('dark');
+            themeStorage.setTheme('dark');
         }
     }
 
     // Toggle theme
     themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
-        setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        themeStorage.setTheme(currentTheme === 'light' ? 'dark' : 'light');
     });
 
     // Listen for system theme changes
