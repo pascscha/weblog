@@ -274,7 +274,7 @@ async function generateRssFeed(inventory, outputRoot) {
     let rssContent = `<?xml version="1.0" encoding="UTF-8" ?><rss version="2.0">
   <channel>
     <title>Pascal Schärli</title>
-    <link>https://pascscha.ch</link>
+    <link>https://schaerli.org</link>
     <description>Hi, I'm Pascal. A cyber security master's graduate from ETH Zürich, now a dedicated Cryptography Engineer with a strong passion for coding and scripting.</description>
     <language>en-us</language>
     <lastBuildDate>${currentDate}</lastBuildDate>
@@ -284,7 +284,7 @@ async function generateRssFeed(inventory, outputRoot) {
     // Add items
     for (const post of sortedPosts) {
       const pubDate = new Date(post.timestamp * 1000).toUTCString();
-      const link = `https://pascscha.ch${post.link}/`;
+      const link = `https://schaerli.org${post.link}/`;
 
       rssContent += `    <item>
       <title>${escapeXml(post.title)}</title>
@@ -336,7 +336,7 @@ async function generateSitemap(inventory, outputRoot) {
     // Add entries for each post
     for (const post of sortedPosts) {
       const lastmod = dayjs(post.timestamp * 1000).format('YYYY-MM-DD');
-      const loc = `https://pascscha.ch${post.link}/`;
+      const loc = `https://schaerli.org${post.link}/`;
 
       sitemapContent += `    <url>
         <loc>${loc}</loc>

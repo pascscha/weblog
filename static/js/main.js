@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set cookie for root domain with 1 year expiry
         const date = new Date();
         date.setFullYear(date.getFullYear() + 1);
-        document.cookie = `theme=${theme}; expires=${date.toUTCString()}; path=/; domain=.pascscha.ch`;
+        document.cookie = `theme=${theme}; expires=${date.toUTCString()}; path=/; domain=.schaerli.org`;
     }
 
     // Function to get theme from cookie
