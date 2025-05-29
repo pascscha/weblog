@@ -18,7 +18,8 @@
     "nunjucks": "^3.2.2",
     "html-minifier-terser": "^7.2.0",
     "clean-css": "^5.3.3",
-    "uglify-js": "^3.19.3"
+    "uglify-js": "^3.19.3",
+    "sharp": "^0.34.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

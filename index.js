@@ -10,6 +10,7 @@ const nunjucks = require('nunjucks');
 const htmlMinifier = require('html-minifier-terser');
 const CleanCSS = require('clean-css');
 const UglifyJS = require('uglify-js');
+const sharp = require('sharp');
 
 // Add this utility function to create unminified copies
 const createUnminifiedCopy = async (filePath, content) => {
@@ -37,7 +38,7 @@ async function minifyStaticFiles(directory) {
       const fullPath = path.join(entry.parentPath, entry.name);
       const ext = path.extname(entry.name).toLowerCase();
 
-      if(fullPath.startsWith("weblog/html/info")) continue;
+      if (fullPath.startsWith("weblog/html/info")) continue;
       if (!extensions.includes(ext)) continue;
 
       console.log("minifying", fullPath)
@@ -198,7 +199,7 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
   try {
     // Read markdown and template
     const markdownContent = await fs.readFile(markdownFile, 'utf-8');
-    
+
     // Convert markdown to HTML
     let htmlContent = converter.makeHtml(markdownContent);
 
@@ -227,19 +228,19 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
 
 async function processPages(pages, root, outputRoot, templateFile) {
   try {
-    
+
     for (const page of pages) {
       const inputFolder = path.join(root, page.dirName);
       const outputFolder = path.join(outputRoot, page.dirName);
       const markdownFile = path.join(inputFolder, 'index.md');
       const outputFile = path.join(outputFolder, 'index.html');
-      
+
       // Ensure output directory exists
       await fs.mkdir(outputFolder, { recursive: true });
-      
+
       // Copy all files except markdown
       await copyDirectory(inputFolder, outputFolder);
-      
+
       // Build context for this page
       const context = {
         title: page.title,
@@ -508,6 +509,34 @@ async function processPdfFiles(outputDir) {
   await processDirectory(outputDir);
 }
 
+// Add this new function to generate favicons
+async function generateFavicons(templatePath, outputDirMain, outputDir) {
+  try {
+    // Ensure the output directory exists
+    await fs.mkdir(outputDir, { recursive: true });
+
+    // List of required sizes from the original files
+    const sizes = [
+      16, 32, 48, 64, 128, 152, 180, 192, 1024
+    ];
+
+    // Generate each size
+    for (const size of sizes) {
+      const outputFile = path.join(outputDir, `favicon-${size}x${size}.png`);
+      await sharp(templatePath)
+        .resize(size, size)
+        .toFile(outputFile);
+    }
+
+    await sharp(templatePath).resize(32, 32).toFile(path.join(outputDirMain, 'favicon.ico'))
+
+    console.log(`Generated favicons in ${outputDir}`);
+  } catch (error) {
+    console.error('Error generating favicons:', error);
+    throw error;
+  }
+}
+
 async function main() {
   program
     .option('-r, --root <path>', 'Root directory of the blog', 'weblog/dynamic')
@@ -559,7 +588,7 @@ async function main() {
         dirName: 'privacy'  // Important: matches folder name
       }
     ];
-    
+
     await processPages(pages, options.root, options.output, pageTemplateFile);
 
     // Generate index page
@@ -578,6 +607,12 @@ async function main() {
     // Add this after all other processing
     console.log('Minifying static files...');
     await minifyStaticFiles(options.output);
+
+    console.log('Generating favicons from template...');
+    const faviconTemplatePath = path.join(options.root, 'img', 'favicon', 'favicon-template.png');
+    const faviconOutputDir = path.join(options.output, 'img', 'favicon');
+    const faviconOutputDirMain = path.join(options.output);
+    await generateFavicons(faviconTemplatePath, faviconOutputDirMain, faviconOutputDir);
 
   } catch (error) {
     console.error('Error:', error);
