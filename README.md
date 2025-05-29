@@ -31,7 +31,7 @@ weblog/
 └── templates/         # Nunjucks templates
 ```
 
-### Deployment
+### Building
 Docker Compose configuration included:
 ```yaml
 services:
@@ -41,6 +41,8 @@ services:
       - .:/app/weblog
     command: ["node", "weblog/index.js"]
 ```
+
+This will create all static files in `./html/`, which you can then server with any proxy, such as `nginx`.
 
 ## Customization Guide
 
