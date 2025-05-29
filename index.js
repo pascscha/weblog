@@ -194,38 +194,67 @@ const converter = new showdown.Converter({
   ]
 });
 
-async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, metadata) {
+async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, context) {
   try {
     // Read markdown and template
     const markdownContent = await fs.readFile(markdownFile, 'utf-8');
-
+    
     // Convert markdown to HTML
     let htmlContent = converter.makeHtml(markdownContent);
 
-    // Calculate read time
-    const wordCount = markdownContent.split(/\s+/).length;
-    const readTime = Math.max(1, Math.round(wordCount / 150));
-
+    // Calculate read time only if needed (for blog posts)
+    let readTime = '';
+    if (context.hasOwnProperty('isPost') && context.isPost) {
+      const wordCount = markdownContent.split(/\s+/).length;
+      const readTimeMinutes = Math.max(1, Math.round(wordCount / 150));
+      readTime = `${readTimeMinutes} min read`;
+    }
 
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {
-      title: metadata.title,
-      description: metadata.description,
-      current_path: metadata.link,
-      date: metadata.date,
-      prev_link: metadata.prev_link,
-      prev_title: metadata.prev_title,
-      next_link: metadata.next_link,
-      next_title: metadata.next_title,
+      ...context,
       content: htmlContent,
-      read_time: `${readTime} min read`,
-      socials: metadata.socials || ''
+      read_time: readTime
     });
 
     // Write the final HTML
     await fs.writeFile(outputFile, finalHtml);
   } catch (error) {
     console.error(`Error processing ${markdownFile}:`, error);
+    throw error;
+  }
+}
+
+async function processPages(pages, root, outputRoot, templateFile) {
+  try {
+    
+    for (const page of pages) {
+      const inputFolder = path.join(root, page.dirName);
+      const outputFolder = path.join(outputRoot, page.dirName);
+      const markdownFile = path.join(inputFolder, 'index.md');
+      const outputFile = path.join(outputFolder, 'index.html');
+      
+      // Ensure output directory exists
+      await fs.mkdir(outputFolder, { recursive: true });
+      
+      // Copy all files except markdown
+      await copyDirectory(inputFolder, outputFolder);
+      
+      // Build context for this page
+      const context = {
+        title: page.title,
+        description: page.description,
+        current_path: page.dirName,
+        socials: '',
+        dirname: page.dirName,
+        isPost: false
+      };
+
+      await convertMarkdownToHtml(markdownFile, templateFile, outputFile, context);
+      console.log(`Processed page: ${page.title}`, outputFile);
+    }
+  } catch (error) {
+    console.error('Error processing pages:', error);
     throw error;
   }
 }
@@ -408,7 +437,7 @@ async function generateSitemap(inventory, outputRoot) {
     // Add entries for each post
     for (const post of sortedPosts) {
       const lastmod = dayjs(post.timestamp * 1000).format('YYYY-MM-DD');
-      const loc = `https://schaerli.org${post.link}/`;
+      const loc = `https://schaerli.org${post.link}`;
 
       sitemapContent += `    <url>
         <loc>${loc}</loc>
@@ -515,11 +544,23 @@ async function main() {
     const inventoryFile = path.join(options.root, 'inventory.json');
     const postTemplateFile = path.join(options.templates, 'weblog_post.html.njk');
     const indexTemplateFile = path.join(options.templates, 'weblog_index.html.njk');
+    const pageTemplateFile = path.join(options.templates, 'page.html.njk');
 
     const inventory = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
 
     // Generate individual posts
     await processInventory(inventory, postTemplateFile, options.root, options.output);
+
+    // Process static pages (privacy policy, etc)
+    const pages = [
+      {
+        title: 'Privacy Policy',
+        description: 'Privacy policy for schaerli.org',
+        dirName: 'privacy'  // Important: matches folder name
+      }
+    ];
+    
+    await processPages(pages, options.root, options.output, pageTemplateFile);
 
     // Generate index page
     await generateIndexPage(inventory, indexTemplateFile, options.output);
