@@ -205,11 +205,9 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
 
     // Calculate read time only if needed (for blog posts)
     let readTime = '';
-    if (context.hasOwnProperty('isPost') && context.isPost) {
-      const wordCount = markdownContent.split(/\s+/).length;
-      const readTimeMinutes = Math.max(1, Math.round(wordCount / 150));
-      readTime = `${readTimeMinutes} min read`;
-    }
+    const wordCount = markdownContent.split(/\s+/).length;
+    const readTimeMinutes = Math.max(1, Math.round(wordCount / 150));
+    readTime = `${readTimeMinutes} min read`;
 
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {
