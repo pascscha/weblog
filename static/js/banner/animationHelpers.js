@@ -14,13 +14,11 @@ async function getDiagramElements(diagramID) {
             var diagram = document.getElementById(diagramID)
             diagram.innerHTML = data;
 
-            var textElements = diagram.querySelectorAll("div");
-            textElements.forEach(function (element) {
-                var text = element.textContent;
-                var match = text.match(/^([CIOP])([0-9A-F])$/);
-
+            // Find animated text elements by ID (e.g., "P0", "O1", "C2", "I3")
+            var allTexts = diagram.querySelectorAll("text[id]");
+            allTexts.forEach(function (element) {
+                var match = element.id.match(/^([CIOP])([0-9A-F])$/);
                 if (match) {
-                    var type, index;
                     diagramElements[match[1]][parseInt(match[2], 16)] = element;
                 }
             })

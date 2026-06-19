@@ -3,18 +3,34 @@ function scrollToSection(event) {
     const targetId = event.target.getAttribute('href').slice(1);
     const targetElement = document.getElementById(targetId);
     const headerHeight = document.querySelector('header').offsetHeight;
-    const extraOffset = 20; // Additional pixels for breathing room
+    const extraOffset = 20;
     const totalOffset = headerHeight + extraOffset;
 
     window.scrollTo({
         top: targetElement.offsetTop - totalOffset,
         behavior: 'smooth'
     });
+
+    history.replaceState(null, '', `#${targetId}`);
+}
+
+function scrollToHeading(event) {
+    const heading = event.currentTarget;
+    const headerHeight = document.querySelector('header').offsetHeight;
+    const extraOffset = 20;
+    const totalOffset = headerHeight + extraOffset;
+
+    window.scrollTo({
+        top: heading.offsetTop - totalOffset,
+        behavior: 'smooth'
+    });
+
+    history.replaceState(null, '', `#${heading.id}`);
 }
 
 function generateTOC() {
     const toc = document.getElementById('toc');
-    const headings = document.querySelectorAll('#rendered-content h1, #rendered-content h2, #rendered-content h3');
+    const headings = document.querySelectorAll('#rendered-content h2, #rendered-content h3');
     const tocList = document.createElement('ul');
 
     headings.forEach((heading, index) => {
@@ -46,7 +62,7 @@ function generateTOC() {
 
 
 function highlightTOC() {
-    const headings = Array.from(document.querySelectorAll('#rendered-content h1, #rendered-content h2, #rendered-content h3'));
+    const headings = Array.from(document.querySelectorAll('#rendered-content h2, #rendered-content h3'));
     const tocLinks = document.querySelectorAll('#toc a');
     const headerHeight = document.querySelector('header').offsetHeight;
 
@@ -71,31 +87,13 @@ function highlightTOC() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const tocToggle = document.getElementById('toc-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const toc = document.getElementById('toc');
-
-    function toggleTOC() {
-        toc.classList.toggle('collapsed');
-        sidebar.classList.toggle('collapsed');
-
-        if (toc.classList.contains('collapsed')) {
-            tocToggle.textContent = '☰';
-        } else {
-            tocToggle.textContent = '✕ Hide Table of Contents';
-        }
-    }
-
-    tocToggle.addEventListener('click', toggleTOC);
-
-
-    // Generate table of contents
     generateTOC();
-
-
-    // Highlight TOC on scroll
     highlightTOC();
     window.addEventListener('scroll', highlightTOC);
+
+    document.querySelectorAll('#rendered-content h2, #rendered-content h3').forEach(heading => {
+        heading.addEventListener('click', scrollToHeading);
+    });
 });
 
 function copyCurrentURL(e) {

@@ -1,4 +1,4 @@
-# Quantum Apocalypse? Demystifying the Doomsday of Encryption
+# Quantum Apocalypse?
 
 Quantum computers are rapidly transitioning from science fiction to reality, and the concern that they may soon be capable of breaking a significant portion of today's cryptographic algorithms is growing. In response to this threat, [NIST finalized the standardization of three post-quantum secure algorithms in August 2024](<](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards)>). However, due to its cutting-edge nature, the discourse surrounding quantum computing is often fraught with buzzwords, myths and fearmongering. In this blog post, I will equip you with the tools to develop your own intuition and technical understanding of these topics, enabling you to make up your own mind.
 
@@ -46,6 +46,8 @@ One quantum attack that affects even the "shielded" algorithms is [Grover's algo
 
 - AES-256 would provide equivalent security to today's AES-128
 - SHA-512 would provide equivalent security to today's SHA-256
+
+**Edit: Because Grover's algorithm is very hard to parallelize, even 128-bit keys are probably enough, as explained in this great write-up by [Filippo](https://words.filippo.io/128-bits/)**
 
 Asymmetric algorithms, such as the RSA encryption scheme, Diffie-Hellman (DH) key exchanges, or Digital Signature Algorithms (DSA), are much more vulnerable to quantum attacks. These algorithms rely on the difficulty of computing discrete logarithms or factorization. While these problems are indeed challenging for conventional computers, [Peter Shor discovered a method](<https://greencompute.uk/References/QuantumComputing/Shor%20(1994)%20-%20algorithms%20for%20QC,%20discrete%20logarithms%20and%20factoring.pdf>) to solve these problems more efficiently using quantum computers. This is why quantum computers significantly affect asymmetric cryptographic algorithms more than symmetric or unkeyed ones.
 
@@ -262,7 +264,7 @@ How should we plan our migration? While we don't know precisely when quantum com
 
 ![Migration timeline](assets/slides/migration-timeline.webp)
 
-1. We have already had quantum secure symmetric algorithms for a while. We might want to [double the key size](https://arxiv.org/pdf/2004.10686) to counter [Grover's algorithm](https://dl.acm.org/doi/pdf/10.1145/237814.237866), for example, by using AES with 256-bit keys instead of 128-bit keys. These algorithms are already widely adopted, and we should continue using them.
+1. We have already had quantum secure symmetric algorithms for a while. We might want to [double the key size](https://arxiv.org/pdf/2004.10686) to counter [Grover's algorithm](https://dl.acm.org/doi/pdf/10.1145/237814.237866), for example, by using AES with 256-bit keys instead of 128-bit keys. These algorithms are already widely adopted, and we should continue using them. **Edit: Because Grover's algorithm is very hard to parallelize, even 128-bit keys are probably enough, as explained in this great write-up by [Filippo](https://words.filippo.io/128-bits/)**
 
 2. Regarding asymmetric algorithms, we should first migrate key exchange and encryption algorithms like DH or RSA to ML-KEM in hybrid mode. Start using these algorithms in your implementations as soon as possible, considering that software written today will likely be used for many years and the need to protect against "store now, decrypt later" attacks. There are already some libraries that allow for such a migration, such as [liboqs](https://openquantumsafe.org/liboqs/wrappers), a C implementation of post-quantum algorithms with wrappers in popular languages like Java, .NET, and Python. Implement algorithms using a hybrid approach, and involve expert help throughout the migration.
 

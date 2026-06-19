@@ -1,6 +1,6 @@
-# Finding 19 Vulnerabilities in One Secure Messenger
+# Finding 19 Vulnerabilities in one Messenger
 
-_This research was conducted as part of my master's thesis. You can read the full thesis [here](https://github.com/cyber-defence-campus/sharekey-review/blob/master/Pascal-Schaerli_Security-Assessment-of-the-Sharekey-Collaboration-App.pdf) if you're interested in the gory details._
+> This research was conducted as part of my master's thesis. You can read the full thesis [here](https://github.com/cyber-defence-campus/sharekey-review/blob/master/Pascal-Schaerli_Security-Assessment-of-the-Sharekey-Collaboration-App.pdf) if you're interested in the gory details.
 
 This is my story about my cryptographic review of Sharekey, a privacy-focused collaboration platform designed to provide cryptographically secured communication and data sharing. When I started this project, I thought there would be little to find. After all, they hadn't implemented any cryptographic algorithms themselves, opting instead for the well-reviewed [NaCl](https://github.com/dchest/tweetnacl-js) library. They'd even been audited by a renowned cryptographer who found no major issues in their protocols. However, it didn't take long for my initial assumptions to be proven wrong. Here's how it unfolded.
 
@@ -11,7 +11,6 @@ This is my story about my cryptographic review of Sharekey, a privacy-focused co
 ![Graphic made by Sharekey to explain their encryption](img/app-to-app.webp)
 
 This project was done in close collaboration with Sharekey. They gave me access to all of their backend code and we had regular meetings to discuss my findings or troubleshoot any issues.
-
 
 ## Key Findings
 
@@ -37,7 +36,7 @@ My next set of findings centered around file sharing. The issues there originate
 
 ![Sharekey backend for file uploading](img/sharekey-backend-for-file-uploading.webp)
 
-The engineering issue they faced there was that they were unable to persist the authenticated session across to the other server. So as an alternative means of authentication, They required each encrypted file chunk to have a signature by the file owner. However, this signature did not cover any intent, such as _"This is chunk &lt;chunk-id&gt; and I want to upload it as part of file &lt;file-id&gt;"_. Instead, it was just a signature over the raw encrypted file contents, a big blob of random-looking bytes. 
+The engineering issue they faced there was that they were unable to persist the authenticated session across to the other server. So as an alternative means of authentication, They required each encrypted file chunk to have a signature by the file owner. However, this signature did not cover any intent, such as _"This is chunk &lt;chunk-id&gt; and I want to upload it as part of file &lt;file-id&gt;"_. Instead, it was just a signature over the raw encrypted file contents, a big blob of random-looking bytes.
 
 Pairing this with the ability to overwrite existing file chunks was a recipe for disaster. When you send a file to an adversary, they can now download all of your file chunks, and for example re-upload them in a different order, without any cryptographic way of detecting such tampering.
 
