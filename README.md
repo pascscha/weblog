@@ -14,7 +14,7 @@ A lightweight, markdown-based static site generator designed to transform techni
 - **Optimization Tools**:
   - HTML/CSS/JS minification with source maps
   - Unminified versions with attribution
-  - PDF → GitHub Pages redirect system
+  - PDF → Codeberg Pages redirect system
 
 - **Publishing Automation**:
   - RSS feed generation
