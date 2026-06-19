@@ -7,9 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pascal Schärli - Cryptography Engineer</title>
+    <title>Pascal Schärli</title>
     <meta name="description"
-        content="Pascal Schärli's latest research and projects on cryptography and cyber security.">
+        content="Cryptography Engineer at ELCASecurity, privacy enjoyer and tinkerer. Here I write about Cryptography and Security.">
     <meta name="keywords" content="Pascal Schärli, cyber security, cryptography, encryption, research, ETH Zürich">
 
     <!-- Icons -->
@@ -26,9 +26,9 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <!-- SEO -->
-    <meta property="og:title" content="Pascal Schärli - Cryptography Engineer">
+    <meta property="og:title" content="Pascal Schärli">
     <meta property="og:description"
-        content="Pascal Schärli's latest research and projects on cryptography and cyber security.">
+        content="Cryptography Engineer at ELCASecurity, privacy enjoyer and tinkerer. Here I write about Cryptography and Security.">
     <meta property="og:image" content="https://schaerli.org/img/social-preview.webp">
     <meta property="og:url" content="https://schaerli.org">
     <meta name="twitter:card" content="summary_large_image">
@@ -85,44 +85,56 @@
     <div id="content">
         <div id="about-me">
             <img src="/img/pascscha.webp" alt="Pascal Schärli" id="profile-image">
-            <p>
-                Hi, I'm Pascal. A cyber security master's graduate from ETH Zürich, now a dedicated Cryptography
-                Engineer with a strong passion for coding and scripting.
-            </p>
+            <div id="about-content">
+                <p>
+                    Hi, I'm Pascal! Cryptography Engineer at ELCASecurity, privacy enjoyer and tinkerer. Here I write about
+                    Cryptography and Security. For shorter and more frequent posts see:
+                </p>
+                <div id="about-social-links">
+                    <a href="https://mastodon.social/@pascscha" class="social-link" title="Mastodon">
+                        <i class="fab fa-mastodon"></i>
+                    </a>
+                    <a href="https://bsky.app/profile/pascscha.ch" class="social-link" title="Bluesky">
+                        <i class="fab fa-bluesky"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/pascscha" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div id="blog-posts">
             <h2>
-                My Projects
-                <div>
-                    <button id="theme-toggle" class="btn-icon">
-                            <i class="fas fa-circle-half-stroke"></i>
-                    </button>
-                </div>
+                <span>My Projects</span>
+                <button id="theme-toggle" class="btn-icon">
+                        <i class="fas fa-circle-half-stroke"></i>
+                </button>
+                <a href="/weblog/rss" class="rss-link" title="RSS Feed">
+                    <i class="fas fa-rss"></i>
+                </a>
             </h2>
 
             <div class="post-list">
                 {% for post in posts %}
-                <article class="blog-post">
-                    <div class="post-image">
-                        <a href="{{ post.link }}">
+                <a href="{{ post.link }}" class="blog-post-link">
+                    <article class="blog-post">
+                        <div class="post-image">
                             <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
-                        </a>
-                    </div>
-                    <div class="post-content">
-                        <div class="post-date">
-                            {{ post.date }}
                         </div>
-                        <h3 class="post-title">
-                            <a href="{{ post.link }}">
+                        <div class="post-content">
+                            <div class="post-date">
+                                {{ post.date }}
+                            </div>
+                            <h3 class="post-title">
                                 {{ post.title }}
-                            </a>
-                        </h3>
-                        <p class="post-summary">
-                            {{ post.description }}
-                        </p>
-                    </div>
-                </article>
+                            </h3>
+                            <p class="post-summary">
+                                {{ post.description }}
+                            </p>
+                        </div>
+                    </article>
+                </a>
                 {% endfor %}
             </div>
         </div>
@@ -133,7 +145,7 @@
             <a href="mailto:mail@schaerli.org" class="social-link" title="Email">
                 <i class="fas fa-envelope"></i>
             </a>
-            <a href="https://github.com/pascscha" class="social-link" title="GitHub">
+            <a href="https://github.com/pascscha/weblog" class="social-link" title="GitHub">
                 <i class="fab fa-github"></i>
             </a>
             <a href="https://mastodon.social/@pascscha" class="social-link" title="Mastodon">
@@ -151,6 +163,8 @@
         </div>
         <div id="footer-links">
             <a href="/privacy" class="footer-link">Privacy Policy</a>
+            <span class="footer-sep">|</span>
+            <a href="https://creativecommons.org/licenses/by/4.0/" class="footer-link">License: CC BY 4.0</a>
         </div>
     </footer>
 
@@ -221,7 +235,7 @@
       },
       "sameAs": [
         "https://linkedin.com/in/pascscha",
-        "https://github.com/pascscha",
+        "https://github.com/pascscha/weblog",
         "https://stackoverflow.com/users/10046273/pascscha",
         "https://bsky.app/profile/pascscha.ch",
         "https://mastodon.social/@pascscha"

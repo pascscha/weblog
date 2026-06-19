@@ -65,4 +65,8 @@ Edit Nunjucks files in `templates/`:
 - `weblog_post.html.njk` - Post detail view
 
 ## License
-GPLv3 - See [LICENSE](LICENSE) file for details.
+
+This repository uses two licenses:
+
+- **Code** (templates/, static/, index.js, Dockerfile, etc.): [GNU GPLv3](./LICENSE-CODE)
+- **Content** (dynamic/ — blog posts, images, assets): [CC BY 4.0](./LICENSE-CONTENT)

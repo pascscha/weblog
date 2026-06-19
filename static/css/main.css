@@ -16,7 +16,7 @@
     --red: #ff6b5a;
     --green: #7fb069;
     --yellow: #f4d03f;
-    --blue: #6fa8dc;
+    --blue: #67a8ff;
     --purple: #b19cd9;
     --aqua: #5daca8;
     --gray: #9b958c;
@@ -69,7 +69,7 @@
     --red: #9d0006;
     --green: #79740e;
     --yellow: #b57614;
-    --blue: #076678;
+    --blue: #17f;
     --purple: #8f3f71;
     --aqua: #427b58;
     --orange: #af3a03;
@@ -389,6 +389,8 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    z-index: 2;
 }
 
 #social-links {
@@ -418,7 +420,8 @@ footer {
 
 @media (max-width: 768px) {
     #content {
-        padding: 1rem;
+        padding: 6rem 1rem;
         max-width: 80%;
     }
 }
+

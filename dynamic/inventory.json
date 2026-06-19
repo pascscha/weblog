@@ -9,7 +9,7 @@
     {
         "timestamp": 1688421664,
         "title": "Finding 19 Vulnerabilities in one Messenger",
-        "description": "When I started this project, I thought there would be little to find. However, it didn't take long for my initial assumptions to be proven wrong.",
+        "description": "For my masters thesis I reviewed the cryptography of the Sharekey messenger app. I found many issues, and this post shows the most fun ones.",
         "link": "/weblog/2-sharekey-cryptography-review/",
         "socials": {
             "linkedin": "https://www.linkedin.com/posts/pascscha_github-cyber-defence-campussharekey-review-activity-7069949930185879552-V7JH",
@@ -28,8 +28,12 @@
     {
         "timestamp": 1729162800,
         "title": "Quantum Apocalypse?",
-        "description": "NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a technical intuition on the actual impact of this, going beyond the hype and buzzwords.",
+        "description": "NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a gentle introduction and an intuition on the actual impact.",
         "link": "/weblog/4-quantum-apocalypse/",
+        "attribution": {
+            "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+            "label": "my_watercolor_sketchbook"
+        },
         "socials": {
             "mastodon": "https://mastodon.social/@pascscha/113322491052520333",
             "linkedin": "https://www.linkedin.com/posts/pascscha_quantumcomputing-cryptography-infosec-activity-7252812116506673153-snDs"

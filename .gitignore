@@ -172,3 +172,4 @@ cython_debug/
 
 # Rendered files
 html
+node_modules

@@ -1,5 +1,7 @@
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const showdown = require('showdown');
 const shodownKatex = require('showdown-katex');
 const cheerio = require('cheerio');
@@ -11,6 +13,8 @@ const htmlMinifier = require('html-minifier-terser');
 const CleanCSS = require('clean-css');
 const UglifyJS = require('uglify-js');
 const sharp = require('sharp');
+
+const LICENSE_SUFFIX = '\n---\n\n> License: CC BY 4.0. To view a copy of this license, visit <https://creativecommons.org/licenses/by/4.0/>\n';
 
 // Add this utility function to create unminified copies
 const createUnminifiedCopy = async (filePath, content) => {
@@ -141,6 +145,20 @@ const mediaExtension = {
           .append(`<div class="image-description">${alt}</div>`);
 
         $img.replaceWith($container);
+      } else if (src && src.match(/\.webm$/i)) {
+        // WebM video processing
+        const video = `<video autoplay loop muted playsinline class="blog-video">
+          <source src="${src}" type="video/webm">
+        </video>`;
+
+        const $container = $('<div class="image-container"></div>')
+          .append(video);
+
+        if (alt) {
+          $container.append(`<div class="image-description">${alt}</div>`);
+        }
+
+        $img.replaceWith($container);
       } else if (alt) {
         // Regular image processing
         $img.attr('loading', 'lazy');
@@ -206,7 +224,7 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
     // Calculate read time only if needed (for blog posts)
     let readTime = '';
     const wordCount = markdownContent.split(/\s+/).length;
-    const readTimeMinutes = Math.max(1, Math.round(wordCount / 150));
+    const readTimeMinutes = Math.max(1, Math.round(wordCount / 200));
     readTime = `${readTimeMinutes} min read`;
 
     // Render template with nunjucks
@@ -250,6 +268,7 @@ async function processPages(pages, root, outputRoot, templateFile) {
       };
 
       await convertMarkdownToHtml(markdownFile, templateFile, outputFile, context);
+      await fs.appendFile(outputFile.replace(/\.html$/, '.md'), LICENSE_SUFFIX);
       console.log(`Processed page: ${page.title}`, outputFile);
     }
   } catch (error) {
@@ -287,6 +306,7 @@ async function processInventory(inventory, templateFile, root, outputRoot) {
       const metadata = {
         ...entry,
         date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
+        current_path: entry.link,
         prev_link: i > 0 ? inventory[i - 1].link : '#',
         prev_title: i > 0 ? `← ${inventory[i - 1].title}` : '',
         next_link: i < inventory.length - 1 ? inventory[i + 1].link : '#',
@@ -303,6 +323,7 @@ async function processInventory(inventory, templateFile, root, outputRoot) {
 
       // Convert markdown to HTML
       await convertMarkdownToHtml(markdownFile, templateFile, outputFile, metadata);
+      await fs.appendFile(outputFile.replace(/\.html$/, '.md'), LICENSE_SUFFIX);
 
       console.log(`Processed: ${entry.title}`, outputFile);
     }
@@ -347,7 +368,7 @@ async function generateIndexPage(inventory, templateFile, outputRoot) {
 
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {
-      title: "Pascal Schärli - Cryptography Engineer", // Or make this configurable
+      title: "Pascal Schärli",
       posts: posts
     });
 
@@ -410,6 +431,51 @@ async function generateRssFeed(inventory, outputRoot) {
     console.log('Generated RSS feed:', outputFile);
   } catch (error) {
     console.error('Error generating RSS feed:', error);
+    throw error;
+  }
+}
+
+// Add this function to generate redirect pages
+async function generateRedirects(inventory, outputRoot) {
+  try {
+    console.log('Generating redirect pages...');
+
+    for (const post of inventory) {
+      // Extract the numeric ID from the link (e.g., "1" from "/weblog/1-study-materials/")
+      const idMatch = post.link.match(/^\/weblog\/(\d+)/);
+      if (!idMatch || !idMatch[1]) continue;
+
+      const id = idMatch[1];
+      const redirectDir = path.join(outputRoot, id);
+      await fs.mkdir(redirectDir, { recursive: true });
+
+      const redirectPath = path.join(redirectDir, 'index.html');
+      const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=${post.link}" />
+  <link rel="canonical" href="${post.link}" />
+  <title>${escapeXml(post.title)}</title>
+  <meta property="og:title" content="${escapeXml(post.title)}">
+  <meta property="og:description" content="${escapeXml(post.description)}">
+  <meta property="og:image" content="https://schaerli.org${post.link}img/banner.webp">
+  <meta property="og:url" content="https://schaerli.org${post.link}">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <p>Redirecting to <a href="${post.link}">${escapeXml(post.title)}</a></p>
+</body>
+</html>
+      `.trim();
+
+      await fs.writeFile(redirectPath, htmlContent);
+      console.log(`Created redirect for ${id} → ${post.link}`);
+    }
+  } catch (error) {
+    console.error('Error generating redirects:', error);
     throw error;
   }
 }
@@ -544,6 +610,29 @@ async function main() {
 
   const options = program.opts();
 
+  // Load .env file if it exists (relative to script location)
+  try {
+    const envPath = path.join(__dirname, '.env');
+    const envContent = fsSync.readFileSync(envPath, 'utf-8');
+    for (const line of envContent.split('\n')) {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx > 0) {
+          const key = trimmed.slice(0, eqIdx).trim();
+          const value = trimmed.slice(eqIdx + 1).trim();
+          if (!process.env[key]) {
+            process.env[key] = value;
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // .env file not found, skip
+  }
+
+  const PREVIEW_SECRET = process.env.PREVIEW_SECRET || '';
+
 
   try {
     console.log('Copy static files');
@@ -575,8 +664,51 @@ async function main() {
 
     const inventory = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
 
-    // Generate individual posts
-    await processInventory(inventory, postTemplateFile, options.root, options.output);
+    // Separate future posts from current posts
+    const now = Date.now();
+    const currentPosts = inventory.filter(p => p.timestamp * 1000 <= now && !p.draft);
+    const futurePosts = inventory.filter(p => p.timestamp * 1000 > now || p.draft);
+
+    // Generate individual posts (current only)
+    await processInventory(currentPosts, postTemplateFile, options.root, options.output);
+
+    // Process future posts as previews
+    if (futurePosts.length > 0) {
+      if (!PREVIEW_SECRET) {
+        console.warn('Warning: future posts found but no PREVIEW_SECRET set in .env. Skipping preview rendering.');
+      } else {
+        console.log(`Processing ${futurePosts.length} future post(s) as previews...`);
+        for (const entry of futurePosts) {
+          const slug = entry.link.match(/\/([^/]+)\/$/)[1];
+          const hmac = crypto.createHmac('sha256', PREVIEW_SECRET).update(slug).digest('hex');
+          const previewPath = `preview/${hmac}/`;
+          const outputFolder = path.join(options.output, previewPath);
+
+          // Find index in full inventory for prev/next context
+          const fullIdx = inventory.findIndex(e => e.link === entry.link);
+          const metadata = {
+            ...entry,
+            date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
+            current_path: `/${previewPath}`,
+            preview: true,
+            prev_link: fullIdx > 0 ? inventory[fullIdx - 1].link : '#',
+            prev_title: fullIdx > 0 ? `← ${inventory[fullIdx - 1].title}` : '',
+            next_link: fullIdx < inventory.length - 1 ? inventory[fullIdx + 1].link : '#',
+            next_title: fullIdx < inventory.length - 1 ? `${inventory[fullIdx + 1].title} →` : '',
+          };
+
+          const inputFolder = path.join(options.root, entry.link.replace(/^\//, ''));
+          const markdownFile = path.join(inputFolder, 'index.md');
+          const outputFile = path.join(outputFolder, 'index.html');
+
+          await copyDirectory(inputFolder, outputFolder);
+          await convertMarkdownToHtml(markdownFile, postTemplateFile, outputFile, metadata);
+          await fs.appendFile(outputFile.replace(/\.html$/, '.md'), LICENSE_SUFFIX);
+          console.log(`Processed preview: ${entry.title} → /${previewPath}`);
+        }
+
+      }
+    }
 
     // Process static pages (privacy policy, etc)
     const pages = [
@@ -589,14 +721,11 @@ async function main() {
 
     await processPages(pages, options.root, options.output, pageTemplateFile);
 
-    // Generate index page
-    await generateIndexPage(inventory, indexTemplateFile, options.output);
-
-    // Generate RSS feed
-    await generateRssFeed(inventory, options.output);
-
-    // Generate sitemap
-    await generateSitemap(inventory, options.output);
+    // Generate public pages from current posts only (future posts hidden)
+    await generateIndexPage(currentPosts, indexTemplateFile, options.output);
+    await generateRssFeed(currentPosts, options.output);
+    await generateSitemap(currentPosts, options.output);
+    await generateRedirects(currentPosts, options.output);
 
     // Add this new step at the end
     console.log('Processing PDF files...');
