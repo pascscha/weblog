@@ -38,5 +38,21 @@
             "mastodon": "https://mastodon.social/@pascscha/113322491052520333",
             "linkedin": "https://www.linkedin.com/posts/pascscha_quantumcomputing-cryptography-infosec-activity-7252812116506673153-snDs"
         }
+    },
+    {
+        "timestamp": 1782222222,
+        "title": "Proton's crypto is not Transparent and not OPAQUE",
+        "description": "Proton says privacy \"isn't a promise, it's mathematically ensured.\" I found new ways they could read your data anyway.",
+        "link": "/weblog/5-proton/",
+        "keywords": "Pascal Schärli, Proton Mail, Key Transparency, end-to-end encryption, cryptography, Proton Pass, electron, Bitwarden",
+        "attribution": {
+            "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+            "label": "my_watercolor_sketchbook"
+        },
+        "socials": {
+            "mastodon": "https://mastodon.social/@pascscha/116799831472570247",
+            "bluesky": "https://bsky.app/profile/pascscha.ch/post/3moxlh6gcvc2e",
+            "linkedin": "https://www.linkedin.com/posts/pascscha_protonmail-says-privacy-isnt-a-promise-share-7475188752290779136-URiH/"
+        }
     }
 ]
