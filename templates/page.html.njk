@@ -44,6 +44,9 @@
         <a href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></nav>
     </header>
     <div id="content-wrapper">
+        <div id="sidebar">
+            <div id="toc"></div>
+        </div>
         <div id="content">
             <div id="rendered-content">
                 {{ content | safe }}
@@ -79,6 +82,7 @@
         </div>
     </footer>
 
+    <script src="/js/weblog/blog.js"></script>
     <script src="/js/main.js"></script>
 </body>
 

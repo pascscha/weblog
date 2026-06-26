@@ -136,29 +136,29 @@ Plotting these results reveals a repeating signal with a period of 8, which matc
 
 On this small detour, I will provide an intuitive explanation of the capabilities of Fourier transforms. It is a powerful mathematical tool for analyzing periodic signals, as used, for example, in your phone antenna, but also for visualizing music:
 
-![Music visualization using Fourier transform to show frequencies. Music made with Suno AI.](https://youtu.be/JW95v59YR4g)
+![Music visualization using Fourier transform to show frequencies. Music made with Suno AI.](assets/music-visualization-fourier.webm)
 
 I personally know these visualizations from the electronic music label [Monstercat](https://www.youtube.com/watch?v=rEL-HdWvLpM), which I used to listen to a lot. The result is quite intuitive: at the top, you can see the voice frequencies going up and down, while at the bottom, lower frequencies from the drums bounce with the beat.
 
 We can apply the same method to our periodic signal from the factorization problem. By interpreting our signal as a sound wave, we can visualize its frequency components:
 
-![Signal for N = 51 interpreted as Sound, and Fourier transform applied to it.](https://youtu.be/bEu9Jl7QNmY)
+![Signal for N = 51 interpreted as Sound, and Fourier transform applied to it.](assets/signal-n51-fourier.webm)
 
 While it might not sound as pleasant as music, the spectrum shows one frequency dominating. The inverse of this frequency is equal to the period of the signal.
 
 Here's another example with a smaller period, resulting in a higher frequency note:
 
-![Signal for N = 15 interpreted as sound. It sounds higher than before because the period is smaller.](https://youtu.be/29RTVQfwG9A)
+![Signal for N = 15 interpreted as sound. It sounds higher than before because the period is smaller.](assets/signal-n15-higher.webm)
 
 This method works well even when the signals are not perfectly clean and repeat in a more complex way:
 
-![Signal for N = 25, which despite the messy rugged edges sounds deeper than the previous notes.](https://youtu.be/c3B499ghX8o)
+![Signal for N = 25, which despite the messy rugged edges sounds deeper than the previous notes.](assets/signal-n25-deeper.webm)
 
 Despite the rougher edges, our ears can still distinguish that it's a lower note than the previous one. The Fourier transform confirms this, showing a dominant frequency corresponding to a period of 20.
 
 Lastly, here's an even messier signal with an even lower fundamental frequency:
 
-![Signal for N = 69, with the largest period so far, therefore it sounds the deepest.](https://youtu.be/xU2HMhUr6Aw)
+![Signal for N = 69, with the largest period so far, therefore it sounds the deepest.](assets/signal-n69-deepest.webm)
 
 Regardless of the signal's complexity, both our ears and the Fourier transform can discern the underlying frequency, which in this case corresponds to a period of 22.
 

@@ -107,14 +107,7 @@ const imageWithCaptionExtension = {
   }
 };
 
-// Helper function to extract YouTube video ID from various URL formats
-function getYouTubeId(url) {
-  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-  const match = url.match(regex);
-  return match ? match[1] : null;
-}
-
-// Combined extension for both images and YouTube links
+// Combined extension for media files
 const mediaExtension = {
   type: 'output',
   filter: function (text) {
@@ -126,29 +119,12 @@ const mediaExtension = {
       const src = $img.attr('src');
       const alt = $img.attr('alt');
 
-      // Check if this is a YouTube link
-      const youtubeId = getYouTubeId(src);
-
-      if (youtubeId) {
-        // Create YouTube embed
-        const iframe = `<iframe 
-          src="https://www.youtube-nocookie.com/embed/${youtubeId}?si=8KKqQtmbaypVzWbj&rel=0&playsinline=1"
-          title="YouTube video player"
-          loading="lazy"
-          frameborder="0"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen="">
-        </iframe>`.replace(/\s+/g, ' ').trim();
-
-        const $container = $('<div class="image-container"></div>')
-          .append(iframe)
-          .append(`<div class="image-description">${alt}</div>`);
-
-        $img.replaceWith($container);
-      } else if (src && src.match(/\.webm$/i)) {
-        // WebM video processing
-        const video = `<video autoplay loop muted playsinline class="blog-video">
-          <source src="${src}" type="video/webm">
+      if (src && /\.webm/i.test(src.split('#')[0])) {
+        const cleanSrc = src.split('#')[0];
+        const isGif = src.includes('#gif');
+        const attrs = isGif ? 'autoplay loop muted playsinline' : 'controls playsinline';
+        const video = `<video ${attrs} loading="lazy" class="blog-video">
+          <source src="${cleanSrc}" type="video/webm">
         </video>`;
 
         const $container = $('<div class="image-container"></div>')
