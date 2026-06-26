@@ -1,11 +1,25 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Canonical: https://schaerli.org/.well-known/security.txt
+
 # Contact information for reporting security vulnerabilities
 Contact: mailto:pascal@schaerli.org
 
 # Encryption key
-Encryption: https://schaerli.org/keys/publickey.pascal@schaerli.org-fc75cc66ec3eceffff83f4051ac1576b9d4f2e1a.asc
+Encryption: https://schaerli.org/keys/publickey.pascal@schaerli.org-76a007181982b91ef4b1851dfa4136a8f451c75f.asc
+
+# Signing key fingerprint for file verification
+OpenPGP-Fingerprint: 76A007181982B91EF4B1851DFA4136A8F451C75F
 
 # Preferred languages for communication
 Preferred-Languages: en, de
 
-# Expires field indicating validity of this file
-Expires: 2025-12-31
+Expires: 2026-12-31
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQR2oAcYGYK5HvSxhR36QTao9FHHXwUCaj635gAKCRD6QTao9FHH
+X14FAP49Xups9p1Ns5SpRO93tcbwQ0le/AB5UXEly34wsOBingD+Npo5+jkqNILp
+PSMNtiOCN+6W7HSu8T/ucaBlWaJx4AA=
+=bOc5
+-----END PGP SIGNATURE-----
