@@ -1,58 +1,122 @@
-[
-    {
-        "timestamp": 1606863632,
-        "title": "ETH Study Materials",
-        "description": "A collection of study material I created back when I was tutoring Computer Science at ETH Zürich",
-        "link": "/weblog/1-eth-study-materials/",
-        "socials": {}
-    },
-    {
-        "timestamp": 1688421664,
-        "title": "Finding 19 Vulnerabilities in one Messenger",
-        "description": "For my masters thesis I reviewed the cryptography of the Sharekey messenger app. I found many issues, and this post shows the most fun ones.",
-        "link": "/weblog/2-sharekey-cryptography-review/",
-        "socials": {
-            "linkedin": "https://www.linkedin.com/posts/pascscha_github-cyber-defence-campussharekey-review-activity-7069949930185879552-V7JH",
-            "github": "https://github.com/cyber-defence-campus/sharekey-review"
-        }
-    },
-    {
-        "timestamp": 1721222075,
-        "title": "Breaking Military Grade Encryption to Animate my Name",
-        "description": "Getting into the weeds of my flashy website banner, that simulates a padding-oracle attack on AES-CBC.",
-        "link": "/weblog/3-breaking-military-grade-encryption/",
-        "socials": {
-            "linkedin": "https://www.linkedin.com/posts/pascscha_cryptography-infosec-activity-7226971282276270080-iIU-"
-        }
-    },
-    {
-        "timestamp": 1729162800,
-        "title": "Quantum Apocalypse?",
-        "description": "NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a gentle introduction and an intuition on the actual impact.",
-        "link": "/weblog/4-quantum-apocalypse/",
-        "attribution": {
-            "url": "https://www.instagram.com/my_watercolor_sketchbook/",
-            "label": "my_watercolor_sketchbook"
+{
+    "post": [
+        {
+            "timestamp": 1606863632,
+            "title": "ETH Study Materials",
+            "description": "A collection of study material I created back when I was tutoring Computer Science at ETH Zürich",
+            "link": "/weblog/1-eth-study-materials/",
+            "socials": {}
         },
-        "socials": {
-            "mastodon": "https://mastodon.social/@pascscha/113322491052520333",
-            "linkedin": "https://www.linkedin.com/posts/pascscha_quantumcomputing-cryptography-infosec-activity-7252812116506673153-snDs"
-        }
-    },
-    {
-        "timestamp": 1782222222,
-        "title": "Proton's crypto is not Transparent and not OPAQUE",
-        "description": "Proton says privacy \"isn't a promise, it's mathematically ensured.\" I found new ways they could read your data anyway.",
-        "link": "/weblog/5-proton/",
-        "keywords": "Pascal Schärli, Proton Mail, Key Transparency, end-to-end encryption, cryptography, Proton Pass, electron, Bitwarden",
-        "attribution": {
-            "url": "https://www.instagram.com/my_watercolor_sketchbook/",
-            "label": "my_watercolor_sketchbook"
+        {
+            "timestamp": 1688421664,
+            "title": "Finding 19 Vulnerabilities in one Messenger",
+            "description": "For my masters thesis I reviewed the cryptography of the Sharekey messenger app. I found many issues, and this post shows the most fun ones.",
+            "link": "/weblog/2-sharekey-cryptography-review/",
+            "socials": {
+                "linkedin": "https://www.linkedin.com/posts/pascscha_github-cyber-defence-campussharekey-review-activity-7069949930185879552-V7JH",
+                "github": "https://github.com/cyber-defence-campus/sharekey-review"
+            }
         },
-        "socials": {
-            "mastodon": "https://mastodon.social/@pascscha/116799831472570247",
-            "bluesky": "https://bsky.app/profile/pascscha.ch/post/3moxlh6gcvc2e",
-            "linkedin": "https://www.linkedin.com/posts/pascscha_protonmail-says-privacy-isnt-a-promise-share-7475188752290779136-URiH/"
+        {
+            "timestamp": 1721222075,
+            "title": "Breaking Military Grade Encryption to Animate my Name",
+            "description": "Getting into the weeds of my flashy website banner, that simulates a padding-oracle attack on AES-CBC.",
+            "link": "/weblog/3-breaking-military-grade-encryption/",
+            "socials": {
+                "linkedin": "https://www.linkedin.com/posts/pascscha_cryptography-infosec-activity-7226971282276270080-iIU-"
+            }
+        },
+        {
+            "timestamp": 1729162800,
+            "title": "Quantum Apocalypse?",
+            "description": "NIST finalized their first post quantum secure cryptographic algorithms in August 2024. This post provides a gentle introduction and an intuition on the actual impact.",
+            "link": "/weblog/4-quantum-apocalypse/",
+            "attribution": {
+                "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+                "label": "my_watercolor_sketchbook"
+            },
+            "socials": {
+                "mastodon": "https://mastodon.social/@pascscha/113322491052520333",
+                "linkedin": "https://www.linkedin.com/posts/pascscha_quantumcomputing-cryptography-infosec-activity-7252812116506673153-snDs"
+            }
+        },
+        {
+            "timestamp": 1782222222,
+            "title": "Proton's crypto is not Transparent and not OPAQUE",
+            "description": "Proton says privacy \"isn't a promise, it's mathematically ensured.\" I found new ways they could read your data anyway.",
+            "link": "/weblog/5-proton/",
+            "keywords": "Pascal Schärli, Proton Mail, Key Transparency, end-to-end encryption, cryptography, Proton Pass, electron, Bitwarden",
+            "attribution": {
+                "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+                "label": "my_watercolor_sketchbook"
+            },
+            "socials": {
+                "mastodon": "https://mastodon.social/@pascscha/116799831472570247",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/post/3moxlh6gcvc2e",
+                "linkedin": "https://www.linkedin.com/posts/pascscha_protonmail-says-privacy-isnt-a-promise-share-7475188752290779136-URiH/"
+            }
         }
-    }
-]
+    ],
+    "page": [
+        {
+            "title": "Privacy Policy",
+            "description": "Privacy policy for schaerli.org",
+            "dirName": "privacy"
+        },
+        {
+            "title": "400 Bad Request",
+            "description": "Your browser said something my server couldn't understand. Awkward silence all around.",
+            "dirName": "error/400"
+        },
+        {
+            "title": "401 Unauthorized",
+            "description": "This page wants you to prove who you are, but this site doesn't have logins. Something went delightfully sideways.",
+            "dirName": "error/401"
+        },
+        {
+            "title": "403 Forbidden",
+            "description": "I know exactly who you are, and the answer is still no. Blame me having misconfigured something.",
+            "dirName": "error/403"
+        },
+        {
+            "title": "404 Not Found",
+            "description": "This page isn't here. Moved, renamed, deleted, or maybe it only ever existed in your imagination.",
+            "dirName": "error/404"
+        },
+        {
+            "title": "405 Method Not Allowed",
+            "description": "You found the right door, then tried to open it in a way it simply does not open.",
+            "dirName": "error/405"
+        },
+        {
+            "title": "408 Request Timeout",
+            "description": "The server waited for your request, got bored, and gave up. Reload usually sorts it.",
+            "dirName": "error/408"
+        },
+        {
+            "title": "429 Too Many Requests",
+            "description": "Woah. That's a lot of requests. Take a breath. Maybe go look at a tree.",
+            "dirName": "error/429"
+        },
+        {
+            "title": "500 Internal Server Error",
+            "description": "Something broke. My code did something I did not anticipate. It's not you.",
+            "dirName": "error/500"
+        },
+        {
+            "title": "502 Bad Gateway",
+            "description": "My server asked another server a question and got gibberish back. I messed up my proxy config again.",
+            "dirName": "error/502"
+        },
+        {
+            "title": "503 Service Unavailable",
+            "description": "The site is temporarily out of order, catching its breath or being tinkered with by me.",
+            "dirName": "error/503"
+        },
+        {
+            "title": "504 Gateway Timeout",
+            "description": "My server waited for another server that never replied. Probably my puny little server timing out.",
+            "dirName": "error/504"
+        }
+    ]
+}

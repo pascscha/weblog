@@ -638,12 +638,12 @@ async function main() {
     const indexTemplateFile = path.join(options.templates, 'weblog_index.html.njk');
     const pageTemplateFile = path.join(options.templates, 'page.html.njk');
 
-    const inventory = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
+    const { post: posts, page: pages } = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
 
     // Separate future posts from current posts
     const now = Date.now();
-    const currentPosts = inventory.filter(p => p.timestamp * 1000 <= now && !p.draft);
-    const futurePosts = inventory.filter(p => p.timestamp * 1000 > now || p.draft);
+    const currentPosts = posts.filter(p => p.timestamp * 1000 <= now && !p.draft);
+    const futurePosts = posts.filter(p => p.timestamp * 1000 > now || p.draft);
 
     // Generate individual posts (current only)
     await processInventory(currentPosts, postTemplateFile, options.root, options.output);
@@ -660,17 +660,17 @@ async function main() {
           const previewPath = `preview/${hmac}/`;
           const outputFolder = path.join(options.output, previewPath);
 
-          // Find index in full inventory for prev/next context
-          const fullIdx = inventory.findIndex(e => e.link === entry.link);
+          // Find index in full posts list for prev/next context
+          const fullIdx = posts.findIndex(e => e.link === entry.link);
           const metadata = {
             ...entry,
             date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
             current_path: `/${previewPath}`,
             preview: true,
-            prev_link: fullIdx > 0 ? inventory[fullIdx - 1].link : '#',
-            prev_title: fullIdx > 0 ? `← ${inventory[fullIdx - 1].title}` : '',
-            next_link: fullIdx < inventory.length - 1 ? inventory[fullIdx + 1].link : '#',
-            next_title: fullIdx < inventory.length - 1 ? `${inventory[fullIdx + 1].title} →` : '',
+            prev_link: fullIdx > 0 ? posts[fullIdx - 1].link : '#',
+            prev_title: fullIdx > 0 ? `← ${posts[fullIdx - 1].title}` : '',
+            next_link: fullIdx < posts.length - 1 ? posts[fullIdx + 1].link : '#',
+            next_title: fullIdx < posts.length - 1 ? `${posts[fullIdx + 1].title} →` : '',
           };
 
           const inputFolder = path.join(options.root, entry.link.replace(/^\//, ''));
@@ -686,15 +686,7 @@ async function main() {
       }
     }
 
-    // Process static pages (privacy policy, etc)
-    const pages = [
-      {
-        title: 'Privacy Policy',
-        description: 'Privacy policy for schaerli.org',
-        dirName: 'privacy'  // Important: matches folder name
-      }
-    ];
-
+    // Process static pages (privacy policy, error pages, etc)
     await processPages(pages, options.root, options.output, pageTemplateFile);
 
     // Generate public pages from current posts only (future posts hidden)
