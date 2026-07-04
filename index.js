@@ -197,17 +197,10 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
     // Convert markdown to HTML
     let htmlContent = converter.makeHtml(markdownContent);
 
-    // Calculate read time only if needed (for blog posts)
-    let readTime = '';
-    const wordCount = markdownContent.split(/\s+/).length;
-    const readTimeMinutes = Math.max(1, Math.round(wordCount / 200));
-    readTime = `${readTimeMinutes} min read`;
-
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {
       ...context,
-      content: htmlContent,
-      read_time: readTime
+      content: htmlContent
     });
 
     // Write the final HTML

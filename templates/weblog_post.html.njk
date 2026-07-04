@@ -57,11 +57,11 @@
 
 <body>
     <header>
-        <nav><a href="/" class="home-link" title="Home"><span class="site-title home-link">Pascal Schärli</span></a>
+        <nav><div class="nav-left"><a href="/" class="home-link" title="Home"><span class="site-title home-link">Pascal Schärli</span></a></div>
         <button id="theme-toggle" class="btn-icon">
                 <i class="fas fa-circle-half-stroke"></i>
         </button>
-        <a href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></nav>
+        <div class="nav-right"><a href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></div></nav>
     </header>
     <div id="content-wrapper">
         <div id="sidebar">
@@ -81,13 +81,13 @@
             </div>
             <div id="post-info">
                 <span id="post-date">{{ date }}</span>
-                <span id="read-time">{{ read_time }}</span>
                 <div class="post-social-links">
+                    {% set socialIcons = { "reddit": "reddit-alien" } %}
                     {% for platform, url in socials %}
                     {% if url %}
                     <a href="{{ url }}" class="social-share-link" title="View on {{ platform | capitalize }}"
                         target="_blank">
-                        <i class="fab fa-{{ platform }}"></i>
+                        <i class="fab fa-{{ socialIcons[platform] or platform }}"></i>
                     </a>
                     {% endif %}
                     {% endfor %}

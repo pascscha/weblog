@@ -3,6 +3,12 @@
     padding-left: 220px;
 }
 
+@media (min-width: 1440px) {
+    #content-wrapper {
+        padding-left: 0;
+    }
+}
+
 #rendered-content {
     line-height: 1.6;
     font-size: 1.2em;
