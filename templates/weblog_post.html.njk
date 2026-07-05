@@ -79,6 +79,7 @@
                 </div>
                 {% endif %}
             </div>
+            {% if not preview %}
             <div id="post-info">
                 <span id="post-date">{{ date }}</span>
                 <div class="post-social-links">
@@ -97,9 +98,10 @@
                     </a>
                 </div>
             </div>
+            {% endif %}
 
-            {% if draft %}
-            <blockquote class="draft-disclaimer">
+            {% if preview %}
+            <blockquote class="preview-disclaimer">
                 This post is a draft scheduled to be released on {{ date }}
                 at https://schaerli.org{{ link }}. It may change before publication. Please do not share publicly.
             </blockquote>
