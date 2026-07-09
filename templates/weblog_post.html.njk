@@ -24,33 +24,48 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <!-- SEO -->
+    <link rel="canonical" href="https://schaerli.org{{ current_path }}">
     <meta property="og:title" content="{{ title }}">
     <meta property="og:description" content="{{ description }}">
     <meta property="og:image" content="https://schaerli.org{{ current_path }}img/banner.webp">
     <meta property="og:url" content="https://schaerli.org{{ current_path }}">
+    <meta property="og:site_name" content="Pascal Schärli">
+    <meta property="og:locale" content="en_US">
     <meta property="og:type" content="article">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="https://schaerli.org{{ current_path }}img/banner.webp">
 
-    <link rel="alternate" type="text/markdown" href="https://schaerli.org{{ current_path }}index.md">
+    <link rel="alternate" type="text/markdown" href="https://schaerli.org{{ current_path }}index.html.md">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "{{ title }}",
       "description": "{{ description }}",
+      "image": "https://schaerli.org{{ current_path }}img/banner.webp",
       "datePublished": "{{ date }}",
+      "dateModified": "{{ date }}",
       "author": {
         "@type": "Person",
         "name": "Pascal Schärli",
         "jobTitle": "Cryptography Engineer",
         "url": "https://schaerli.org"
       },
+      "publisher": {
+        "@type": "Person",
+        "name": "Pascal Schärli",
+        "url": "https://schaerli.org"
+      },
       "url": "https://schaerli.org{{ current_path }}"
     }
     </script>
 
-    <link rel="stylesheet" href="/css/fontawesome-all.css" rel="preload" as="style" />
-    <link rel="stylesheet" href="/css/highlight-atom-one-dark.css" rel="preload" as="style" />
+    <link rel="preload" href="/css/fontawesome-all.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/fontawesome-all.css">
+    <link rel="preload" href="/css/highlight-atom-one-dark.css" as="style">
+    <link rel="stylesheet" href="/css/highlight-atom-one-dark.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/blog.css">
 </head>
@@ -58,15 +73,15 @@
 <body>
     <header>
         <nav><div class="nav-left"><a href="/" class="home-link" title="Home"><span class="site-title home-link">Pascal Schärli</span></a></div>
-        <button id="theme-toggle" class="btn-icon">
+        <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">
                 <i class="fas fa-circle-half-stroke"></i>
         </button>
         <div class="nav-right"><a href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></div></nav>
     </header>
-    <div id="content-wrapper">
-        <div id="sidebar">
+    <main id="content-wrapper">
+        <aside id="sidebar">
             <div id="toc"></div>
-        </div>
+        </aside>
 
         <div id="content">
             <div class="weblogbanner-wrapper">
@@ -113,7 +128,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div id="social-links">
@@ -127,7 +142,7 @@
                 <i class="fas fa-envelope"></i>
             </a>
 
-            <a href="https://codeberg.org/pascscha/weblog/src/branch/main/dynamic{{ link }}index.md" class="social-link" title="View source on Codeberg" target="_blank">
+            <a href="https://codeberg.org/pascscha/weblog/src/branch/main/content{{ link }}index.html.md" class="social-link" title="View source on Codeberg" target="_blank">
                 <i class="fab fa-git-alt"></i>
             </a>
 

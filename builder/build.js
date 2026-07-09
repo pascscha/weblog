@@ -13,6 +13,7 @@ const htmlMinifier = require('html-minifier-terser');
 const CleanCSS = require('clean-css');
 const UglifyJS = require('uglify-js');
 const sharp = require('sharp');
+const beautifyHtml = require('js-beautify').html;
 
 const LICENSE_SUFFIX = '\n---\n\n> License: CC BY 4.0. To view a copy of this license, visit <https://creativecommons.org/licenses/by/4.0/>\n';
 
@@ -23,10 +24,14 @@ const createUnminifiedCopy = async (filePath, content) => {
   const basename = path.basename(filePath, ext);
   const unminifiedPath = path.join(dir, `${basename}.unminified${ext}`);
 
+  if (ext === '.html') {
+    content = beautifyHtml(content, { indent_size: 2, wrap_line_length: 0, preserve_newlines: true });
+  }
+
   await fs.writeFile(unminifiedPath, content);
 
   // Calculate relative path from output directory
-  const relativePath = path.relative('weblog/html', unminifiedPath); // Use options.output
+  const relativePath = path.relative('html', unminifiedPath); // Use options.output
   return relativePath;
 };
 
@@ -42,7 +47,7 @@ async function minifyStaticFiles(directory) {
       const fullPath = path.join(entry.parentPath, entry.name);
       const ext = path.extname(entry.name).toLowerCase();
 
-      if (fullPath.startsWith("weblog/html/info")) continue;
+      if (fullPath.startsWith("html/info")) continue;
       if (!extensions.includes(ext)) continue;
 
       console.log("minifying", fullPath)
@@ -61,6 +66,7 @@ async function minifyStaticFiles(directory) {
               minifyCSS: true,
               minifyJS: true,
               removeRedundantAttributes: true,
+              processScripts: ['application/ld+json'],
             });
             minified = `<!-- Unminified: https://schaerli.org/${unminifiedFilename} -->\n${minified}`;
             break;
@@ -90,7 +96,7 @@ async function minifyStaticFiles(directory) {
 function replaceSocialsMarker(html, socials, templateFile) {
   if (!socials) return html;
 
-  const $ = cheerio.load(html);
+  const $ = cheerio.load(html, {}, false);
 
   const socialsElements = $('socials');
   if (socialsElements.length === 0) return html;
@@ -112,7 +118,7 @@ function replaceSocialsMarker(html, socials, templateFile) {
 function injectPostDate(html, date) {
   if (!date) return html;
 
-  const $ = cheerio.load(html);
+  const $ = cheerio.load(html, {}, false);
 
   const h1 = $('h1').first();
   if (h1.length === 0) return html;
@@ -127,7 +133,7 @@ function injectPostDate(html, date) {
 const mediaExtension = {
   type: 'output',
   filter: function (text) {
-    const $ = cheerio.load(text);
+    const $ = cheerio.load(text, {}, false);
 
     // Process all img tags
     $('img').each((i, elem) => {
@@ -167,7 +173,7 @@ const mediaExtension = {
 const codeBlockExtension = {
   type: 'output',
   filter: function (text) {
-    const $ = cheerio.load(text);
+    const $ = cheerio.load(text, {}, false);
 
     $('pre code').each((i, block) => {
       // Get the language class if it exists
@@ -252,14 +258,16 @@ async function processPages(pages, root, outputRoot, templateFile) {
       const context = {
         title: page.title,
         description: page.description,
-        current_path: page.dirName,
+        current_path: '/' + page.dirName + '/',
         socials: '',
         dirname: page.dirName,
         isPost: false
       };
 
       await convertMarkdownToHtml(markdownFile, templateFile, outputFile, context);
-      await fs.appendFile(outputFile.replace(/\.html$/, '.md'), LICENSE_SUFFIX);
+      const htmlMdFile = outputFile.replace(/\.html$/, '.html.md');
+      await fs.rename(outputFile.replace(/\.html$/, '.md'), htmlMdFile);
+      await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
       console.log(`Processed page: ${page.title}`, outputFile);
     }
   } catch (error) {
@@ -314,7 +322,9 @@ async function processInventory(inventory, templateFile, root, outputRoot) {
 
       // Convert markdown to HTML
       await convertMarkdownToHtml(markdownFile, templateFile, outputFile, metadata);
-      await fs.appendFile(outputFile.replace(/\.html$/, '.md'), LICENSE_SUFFIX);
+      const htmlMdFile = outputFile.replace(/\.html$/, '.html.md');
+      await fs.rename(outputFile.replace(/\.html$/, '.md'), htmlMdFile);
+      await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
 
       console.log(`Processed: ${entry.title}`, outputFile);
     }
@@ -360,6 +370,7 @@ async function generateIndexPage(inventory, templateFile, outputRoot) {
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {
       title: "Pascal Schärli",
+      current_path: "/",
       posts: posts
     });
 
@@ -443,11 +454,11 @@ async function generateRedirects(inventory, outputRoot) {
       const redirectPath = path.join(redirectDir, 'index.html');
       const htmlContent = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="refresh" content="0; url=${post.link}" />
-  <link rel="canonical" href="${post.link}" />
+  <link rel="canonical" href="https://schaerli.org${post.link}" />
   <title>${escapeXml(post.title)}</title>
   <meta property="og:title" content="${escapeXml(post.title)}">
   <meta property="og:description" content="${escapeXml(post.description)}">
@@ -455,6 +466,7 @@ async function generateRedirects(inventory, outputRoot) {
   <meta property="og:url" content="https://schaerli.org${post.link}">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
+  <style>body{background:#262624;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
 </head>
 <body>
   <p>Redirecting to <a href="${post.link}">${escapeXml(post.title)}</a></p>
@@ -520,6 +532,77 @@ async function generateSitemap(inventory, outputRoot) {
   }
 }
 
+// Generate the sitemap index that references both the main and post sitemaps
+async function generateSitemapIndex(inventory, outputRoot) {
+  try {
+    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
+    const latestPostDate = sortedPosts.length > 0
+      ? dayjs(sortedPosts[0].timestamp * 1000).format('YYYY-MM-DD')
+      : dayjs().format('YYYY-MM-DD');
+    const buildDate = dayjs().format('YYYY-MM-DD');
+
+    let content = `<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>https://schaerli.org/sitemap-main.xml</loc>
+        <lastmod>${buildDate}</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://schaerli.org/weblog/sitemap.xml</loc>
+        <lastmod>${latestPostDate}</lastmod>
+    </sitemap>
+</sitemapindex>`;
+
+    const outputFile = path.join(outputRoot, 'sitemap.xml');
+    await fs.writeFile(outputFile, content);
+    console.log('Generated sitemap index:', outputFile);
+  } catch (error) {
+    console.error('Error generating sitemap index:', error);
+    throw error;
+  }
+}
+
+// Generate llms.txt for AI content discovery
+async function generateLlmsTxt(inventory, outputRoot) {
+  try {
+    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
+    const siteUrl = 'https://schaerli.org';
+
+    let content = `# schaerli.org
+
+> Pascal Schärli's blog about cryptography, security, and privacy.
+> Cryptography Engineer at ELCASecurity, ETH Zürich alumni.
+
+## Content
+
+For your convenience, all blog posts are available as clean .md files below.
+The content uses a permissive [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+license - you are free to copy and redistribute the material in any medium or format
+for any purpose, even commercially. Just make sure to link back to https://schaerli.org
+when you do so.
+
+## Blog Posts
+
+`;
+
+    for (const post of sortedPosts) {
+      const url = `${siteUrl}${post.link}index.html.md`;
+      content += `- [${post.title}](${url}): ${post.description}\n`;
+    }
+
+    content += `\n## Source Code
+
+The code to build the website is open-source at https://codeberg.org/pascscha/weblog
+`;
+
+    const outputFile = path.join(outputRoot, 'llms.txt');
+    await fs.writeFile(outputFile, content);
+    console.log('Generated llms.txt:', outputFile);
+  } catch (error) {
+    console.error('Error generating llms.txt:', error);
+    throw error;
+  }
+}
+
 // Add this new function
 async function processPdfFiles(outputDir) {
   const processDirectory = async (dir) => {
@@ -537,7 +620,7 @@ async function processPdfFiles(outputDir) {
         // Determine if it's in weblog or not-weblog
         let githubPath;
         if (relativePath.startsWith('weblog/')) {
-          githubPath = `https://media.githubusercontent.com/media/pascscha/weblog/refs/heads/main/dynamic/${relativePath}`;
+          githubPath = `https://media.githubusercontent.com/media/pascscha/weblog/refs/heads/main/content/${relativePath}`;
         } else {
           githubPath = `https://media.githubusercontent.com/media/pascscha/weblog/refs/heads/main/static/${relativePath}`;
         }
@@ -545,9 +628,10 @@ async function processPdfFiles(outputDir) {
         // Create HTML redirect content
         const htmlContent = `
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta http-equiv="refresh" content="0; url=${githubPath}">
+  <style>body{background:#262624;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
 </head>
 <body>
   <p>Redirecting to <a href="${githubPath}">${githubPath}</a></p>
@@ -594,16 +678,16 @@ async function generateFavicons(templatePath, outputDirMain, outputDir) {
 
 async function main() {
   program
-    .option('-r, --root <path>', 'Root directory of the blog', 'weblog/dynamic')
-    .option('-t, --templates <path>', 'Templates directory', 'weblog/templates')
-    .option('-o, --output <path>', 'Output directory for HTML files', 'weblog/html')
+    .option('-r, --root <path>', 'Root directory of the blog', 'content')
+    .option('-t, --templates <path>', 'Templates directory', 'templates')
+    .option('-o, --output <path>', 'Output directory for HTML files', 'html')
     .parse(process.argv);
 
   const options = program.opts();
 
   // Load .env file if it exists (relative to script location)
   try {
-    const envPath = path.join(__dirname, '.env');
+    const envPath = path.join(__dirname, '..', '.env');
     const envContent = fsSync.readFileSync(envPath, 'utf-8');
     for (const line of envContent.split('\n')) {
       const trimmed = line.trim();
@@ -633,7 +717,7 @@ async function main() {
     await fs.mkdir(options.output, { recursive: true });
 
     // Copy static files
-    const staticDir = 'weblog/static';
+    const staticDir = 'static';
     const staticFiles = await fs.readdir(staticDir, { withFileTypes: true });
 
     for (const file of staticFiles) {
@@ -694,7 +778,9 @@ async function main() {
 
           await copyDirectory(inputFolder, outputFolder);
           await convertMarkdownToHtml(markdownFile, postTemplateFile, outputFile, metadata);
-          await fs.appendFile(outputFile.replace(/\.html$/, '.md'), LICENSE_SUFFIX);
+          const htmlMdFile = outputFile.replace(/\.html$/, '.html.md');
+          await fs.rename(outputFile.replace(/\.html$/, '.md'), htmlMdFile);
+          await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
           console.log(`Processed preview: ${entry.title} → /${previewPath}`);
         }
 
@@ -708,7 +794,9 @@ async function main() {
     await generateIndexPage(currentPosts, indexTemplateFile, options.output);
     await generateRssFeed(currentPosts, options.output);
     await generateSitemap(currentPosts, options.output);
+    await generateSitemapIndex(currentPosts, options.output);
     await generateRedirects(currentPosts, options.output);
+    await generateLlmsTxt(currentPosts, options.output);
 
     // Add this new step at the end
     console.log('Processing PDF files...');

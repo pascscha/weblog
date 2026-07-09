@@ -28,16 +28,24 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <!-- SEO -->
+    <link rel="canonical" href="https://schaerli.org/">
     <meta property="og:title" content="Pascal Schärli">
     <meta property="og:description"
         content="Cryptography Engineer at ELCASecurity, privacy enjoyer and tinkerer. Here I write about Cryptography and Security.">
     <meta property="og:image" content="https://schaerli.org/img/social-preview.webp">
     <meta property="og:url" content="https://schaerli.org">
+    <meta property="og:site_name" content="Pascal Schärli">
+    <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pascal Schärli">
+    <meta name="twitter:description" content="Cryptography Engineer at ELCASecurity, privacy enjoyer and tinkerer. Here I write about Cryptography and Security.">
+    <meta name="twitter:image" content="https://schaerli.org/img/social-preview.webp">
+    <link rel="alternate" type="application/rss+xml" title="Pascal Schärli" href="/weblog/rss">
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/home.css">
 
+    <link rel="preload" href="/css/fontawesome-all.css" as="style" onload="this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/fontawesome-all.css">
 
     <!-- Banner Font -->
@@ -239,9 +247,9 @@
         </div>
     </div>
 
-    <div id="content">
+    <main id="content">
         <div id="about-me">
-            <img src="/img/pascscha.webp" alt="Pascal Schärli" id="profile-image">
+            <img src="/img/pascscha-thumbnail.webp" alt="Pascal Schärli" id="profile-image">
             <div id="about-content">
                 <p>
                     Hi, I'm Pascal! Cryptography Engineer at ELCASecurity, privacy enjoyer and tinkerer. Here I write about
@@ -264,7 +272,7 @@
         <div id="blog-posts">
             <h2>
                 <span>My Projects</span>
-                <button id="theme-toggle" class="btn-icon">
+                <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">
                         <i class="fas fa-circle-half-stroke"></i>
                 </button>
                 <a href="/weblog/rss" class="rss-link" title="RSS Feed">
@@ -295,7 +303,7 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
+    </main>
 
     <footer>
         <div id="social-links">
@@ -324,8 +332,6 @@
             <a href="https://creativecommons.org/licenses/by/4.0/" class="footer-link">License: CC BY 4.0</a>
         </div>
     </footer>
-
-</body>
 
 <script>
     window.addEventListener('DOMContentLoaded', (event) => {
@@ -391,24 +397,35 @@
 <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Pascal Schärli",
-      "url": "https://schaerli.org",
-      "jobTitle": "Cryptography Engineer",
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "ETH Zürich"
-      },
-      "sameAs": [
-        "https://linkedin.com/in/pascscha",
-        "https://github.com/pascscha",
-        "https://codeberg.org/pascscha",
-        "https://stackoverflow.com/users/10046273/pascscha",
-        "https://bsky.app/profile/pascscha.ch",
-        "https://mastodon.social/@pascscha"
+      "@graph": [
+        {
+          "@type": "Person",
+          "name": "Pascal Schärli",
+          "url": "https://schaerli.org",
+          "jobTitle": "Cryptography Engineer",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "ETH Zürich"
+          },
+          "sameAs": [
+            "https://linkedin.com/in/pascscha",
+            "https://github.com/pascscha",
+            "https://codeberg.org/pascscha",
+            "https://stackoverflow.com/users/10046273/pascscha",
+            "https://bsky.app/profile/pascscha.ch",
+            "https://mastodon.social/@pascscha"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "name": "Pascal Schärli",
+          "url": "https://schaerli.org"
+        }
       ]
     }
     </script>
     <script src="/js/main.js"></script>
+
+</body>
 
 </html>

@@ -2,10 +2,10 @@
   "name": "weblog-renderer",
   "version": "1.0.0",
   "description": "Markdown to HTML renderer for weblog",
-  "main": "index.js",
+  "main": "build.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node build.js",
+    "dev": "nodemon build.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
@@ -17,6 +17,7 @@
     "punycode": "^2.1.1",
     "nunjucks": "^3.2.2",
     "html-minifier-terser": "^7.2.0",
+    "js-beautify": "^1.15.1",
     "clean-css": "^5.3.3",
     "uglify-js": "^3.19.3",
     "sharp": "^0.34.2"

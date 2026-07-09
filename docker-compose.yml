@@ -1,8 +1,11 @@
 services:
   markdown-renderer:
-    build: .
+    build: ./builder
+    user: "1000:1000"
+    working_dir: /app
     volumes:
-      - .:/app/weblog
+      - .:/app
+      - /app/builder/node_modules
     environment:
       - NODE_ENV=production
-    command: ["node", "weblog/index.js"]
+    command: ["node", "builder/build.js"]
