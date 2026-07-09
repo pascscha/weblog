@@ -5,6 +5,8 @@
 
 
 <head>
+    <script>document.documentElement.classList.add('js')</script>
+    <link rel="preload" href="/fonts/VT323.woff2" as="font" type="font/woff2" crossorigin>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pascal Schärli</title>
@@ -33,10 +35,6 @@
     <meta property="og:url" content="https://schaerli.org">
     <meta name="twitter:card" content="summary_large_image">
 
-    <script src="/js/banner/MilitaryGradeEncryptor.js"></script>
-    <script src="/js/banner/paddingOracleDemo.js"></script>
-    <script src="/js/banner/animationHelpers.js"></script>
-
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/home.css">
 
@@ -48,11 +46,15 @@
             font-family: 'VT323';
             font-style: normal;
             font-weight: 400;
-            font-display: swap;
+            font-display: block;
             src: url(/fonts/VT323.woff2) format('woff2');
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
     </style>
+
+    <script src="/js/banner/MilitaryGradeEncryptor.js" defer></script>
+    <script src="/js/banner/paddingOracleDemo.js" defer></script>
+    <script src="/js/banner/animationHelpers.js" defer></script>
 </head>
 
 <body>
@@ -339,11 +341,20 @@
                 diagramElements["T"] = document.getElementById("banner-title")
 
                 function showAnimation() {
-                    // Can be any string with < 15 utf-8 encoded bytes
+                    diagramElements["T"].textContent = '';
+                    for (let key of ['C','I','O','P']) {
+                        for (let i = 0; i <= 15; i++) {
+                            if (diagramElements[key][i]) diagramElements[key][i].textContent = '';
+                        }
+                    }
+                    document.getElementById('banner').classList.add('ready');
                     let encryptor = new MilitaryGradeEncryptor("Pascal Schärli");
 
                     encryptor.getEncryptedSecret().then((ciphertext) => {
                         decryptBlockWithPaddingOracle(ciphertext, encryptor, diagramElements, 100);
+                    }).catch(err => {
+                        console.error('Animation failed:', err);
+                        document.getElementById('banner').classList.add('ready');
                     });
                 }
 

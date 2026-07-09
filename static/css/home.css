@@ -2,6 +2,18 @@ h2 {
     margin-top: 3rem;
 }
 
+/* FOUC prevention: hide banner diagram/title for JS users until animation is ready */
+.js #banner-diagram,
+.js #banner-title {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+#banner.ready #banner-diagram,
+#banner.ready #banner-title {
+    opacity: 1;
+}
+
 /* Banner */
 #banner {
     height: 100vh;
@@ -17,6 +29,7 @@ h2 {
 #banner-title {
     font-family: "VT323", monospace;
     font-size: 4rem;
+    min-height: 1.5em;
     color: #00ff00;
     text-align: center;
     margin-bottom: 2rem;
