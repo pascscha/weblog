@@ -6,6 +6,8 @@ This post accompanies my session at [BaselOne](https://baselone.org/) from 2024-
 
 [![Click here to view the Slides as PDF](img/slides-thumbnail.webp)](https://codeberg.org/pascscha/weblog/media/branch/main/dynamic/weblog/4-quantum-apocalypse/assets/Pascal-Schaerli_Quantum-Apocalypse.pdf)
 
+<socials/>
+
 ## Why we care today
 
 Quantum computers and post-quantum cryptographic algorithms are a hot topic at the moment. In August of this year, NIST (the National Institute of Standards and Technology of the United States) [released their first 3 finalized post-quantum secure cryptographic algorithms](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards), after many years of designing and testing them. NIST's suggestions and standards [often become industry best practices](https://www.nist.gov/blogs/cybersecurity-insights/cornerstone-cybersecurity-cryptographic-standards-and-50-year-evolution), extending beyond the US.

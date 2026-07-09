@@ -6,6 +6,8 @@ Proton pitches itself as a privacy-respecting alternative to Google and friends.
 
 If Proton plays by the rules, their protocols probably provide adequate protection and give them a credible basis to deny lawful access requests. But the moment that changes, or their servers are compromised (a "malicious server" threat model), there are several technical paths into user data. In this post, I show new attack paths I discovered and responsibly disclosed to Proton: a flaw in their Key Transparency implementation allows for man-in-the-middle (MITM) attacks, and their desktop auto-updater can install unsigned executables without asking for permission. Read my conclusion on why I still use Proton to host my email and VPN.
 
+<socials/>
+
 ## Key Transparency
 
 When two Proton users communicate, say over email, Proton uses public-key cryptography. The hard part is making sure the sender gets the right public key of the recipient in the first place. Encrypt with the wrong one and a man-in-the-middle reads the message instead of the intended recipient. Every end-to-end encrypted protocol has to solve this. On the web, browsers and operating systems ship an extensive list of certificate authorities, that serve as a root of ["trust"](https://sslmate.com/resources/certificate_authority_failures). End-to-end encrypted messengers like [Signal](https://signal.org) show you a fingerprint and ask you to compare it over a separate channel, which works but only if users actually do it (they usually don't).

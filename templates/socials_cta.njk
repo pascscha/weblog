@@ -1,0 +1,17 @@
+<div class="socials-cta">
+    <div class="socials-cta-label">Comment or Share on</div>
+    <div class="post-social-links">
+        {% set socialIcons = { "reddit": "reddit-alien" } %}
+        {% for platform, url in socials %}
+        {% if url %}
+        <a href="{{ url }}" class="social-share-link" title="View on {{ platform | capitalize }}" target="_blank">
+            <i class="fab fa-{{ socialIcons[platform] or platform }}"></i>
+        </a>
+        {% endif %}
+        {% endfor %}
+        <a href="#" class="social-share-link share-button" title="Copy link" onclick="copyCurrentURL(event)">
+            <i class="fas fa-share-nodes"></i>
+            <div id="copy-tooltip" style="display: none;">Copy URL</div>
+        </a>
+    </div>
+</div>

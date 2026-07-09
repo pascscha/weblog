@@ -107,6 +107,43 @@ const imageWithCaptionExtension = {
   }
 };
 
+// Socials marker replacement
+function replaceSocialsMarker(html, socials, templateFile) {
+  if (!socials) return html;
+
+  const $ = cheerio.load(html);
+
+  const socialsElements = $('socials');
+  if (socialsElements.length === 0) return html;
+
+  const entries = Object.entries(socials).filter(([_, url]) => url);
+  if (entries.length === 0) {
+    socialsElements.remove();
+    return $.html();
+  }
+
+  const socialsTemplate = path.join(path.dirname(templateFile), 'socials_cta.njk');
+  const ctaHtml = nunjucks.render(socialsTemplate, { socials });
+
+  socialsElements.replaceWith(ctaHtml);
+  return $.html();
+}
+
+// Inject post date as a split-line after the first H1
+function injectPostDate(html, date) {
+  if (!date) return html;
+
+  const $ = cheerio.load(html);
+
+  const h1 = $('h1').first();
+  if (h1.length === 0) return html;
+
+  const dateLine = `<div class="post-date-line"><span class="line"></span><span class="post-date">${date}</span><span class="line"></span></div>`;
+  h1.after(dateLine);
+
+  return $.html();
+}
+
 // Combined extension for media files
 const mediaExtension = {
   type: 'output',
@@ -196,6 +233,12 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
 
     // Convert markdown to HTML
     let htmlContent = converter.makeHtml(markdownContent);
+
+    // Replace <socials> markers with social sharing links
+    htmlContent = replaceSocialsMarker(htmlContent, context.socials, templateFile);
+
+    // Inject post date as a split-line after the first H1
+    htmlContent = injectPostDate(htmlContent, context.date);
 
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {

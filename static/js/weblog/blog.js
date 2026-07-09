@@ -94,19 +94,33 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('#rendered-content h2, #rendered-content h3').forEach(heading => {
         heading.addEventListener('click', scrollToHeading);
     });
+
+    setupCopyTooltip();
 });
 
 function copyCurrentURL(e) {
     e.preventDefault();
+    const tooltip = document.getElementById('copy-tooltip');
+    tooltip.textContent = 'URL copied!';
+    tooltip.style.display = 'block';
+
     navigator.clipboard.writeText(window.location.href)
-        .then(() => {
-            const tooltip = document.getElementById('copy-tooltip');
-            tooltip.style.display = 'block';
-            setTimeout(() => {
-                tooltip.style.display = 'none';
-            }, 2000);
-        })
         .catch(err => {
             console.error('Failed to copy URL:', err);
         });
+}
+
+function setupCopyTooltip() {
+    const copyLink = document.querySelector('.share-button');
+    const tooltip = document.getElementById('copy-tooltip');
+    if (!copyLink || !tooltip) return;
+
+    copyLink.addEventListener('mouseenter', () => {
+        tooltip.textContent = 'Copy URL';
+        tooltip.style.display = 'block';
+    });
+
+    copyLink.addEventListener('mouseleave', () => {
+        tooltip.style.display = 'none';
+    });
 }
