@@ -53,10 +53,10 @@
 
 /* Blockquotes */
 blockquote {
-    border-left: 4px solid var(--fg4);
+    border-left: 4px solid var(--border);
     margin: 1.5rem 0;
     padding: 0 0 0 1.5rem;
-    color: var(--fg3);
+    color: var(--fg-muted);
     font-style: italic;
 }
 
@@ -65,7 +65,7 @@ blockquote p {
 }
 
 blockquote.preview-disclaimer {
-    border-left-color: var(--orange);
+    border-left-color: var(--warning);
     font-style: normal;
     font-weight: bold;
     padding-top: 0.5rem;
@@ -110,7 +110,7 @@ iframe {
 
 .image-description {
     text-align: center;
-    color: var(--fg3);
+    color: var(--fg-muted);
     font-style: italic;
     margin-top: 1rem;
     padding: 0 1rem;
@@ -137,7 +137,7 @@ pre code.hljs {
 }
 
 .nav-link {
-    color: var(--blue);
+    color: var(--accent);
     font-weight: bold;
 }
 
@@ -159,11 +159,11 @@ pre code.hljs {
 .post-date-line .line {
     flex: 1;
     height: 2px;
-    background-color: var(--fg2);
+    background-color: var(--border);
 }
 
 .post-date-line .post-date {
-    color: var(--fg3);
+    color: var(--fg-muted);
     font-size: 1.1rem;
     white-space: nowrap;
 }
@@ -207,18 +207,18 @@ pre code.hljs {
 }
 
 #toc a {
-    color: var(--fg3);
+    color: var(--fg-muted);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 #toc a:hover {
-    color: var(--blue);
+    color: var(--accent);
 }
 
 #toc .active {
     font-weight: bold;
-    color: var(--blue);
+    color: var(--accent);
 }
 
 #rendered-content h2,
@@ -229,7 +229,7 @@ pre code.hljs {
 
 #rendered-content h2:hover,
 #rendered-content h3:hover {
-    color: var(--blue);
+    color: var(--accent);
 }
 
 .share-button {
@@ -242,8 +242,8 @@ top: 100%;
 left: 50%;
 transform: translateX(-50%);
 margin-top: 8px;
-background-color: var(--surface-color);
-color: var(--text-secondary);
+background-color: var(--surface);
+color: var(--fg-muted);
 padding: 6px 12px;
 border-radius: 5px;
 font-size: 0.8rem;
@@ -278,7 +278,7 @@ white-space: nowrap;
 .socials-cta .socials-cta-label {
     margin-bottom: 0.75rem;
     font-size: 1.2rem;
-    color: var(--fg3);
+    color: var(--fg-muted);
 }
 
 .socials-cta .post-social-links {
@@ -289,7 +289,7 @@ white-space: nowrap;
 }
 
 .socials-cta .social-share-link {
-    color: var(--fg3);
+    color: var(--fg-muted);
     font-size: 1.6em;
     margin-left: 0;
     text-decoration: none;
@@ -298,7 +298,7 @@ white-space: nowrap;
 }
 
 .socials-cta .social-share-link:hover {
-    color: var(--blue);
+    color: var(--accent);
     transform: scale(1.15);
 }
 

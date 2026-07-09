@@ -56,7 +56,7 @@ h2 {
     left: 50%;
     transform: translateX(-50%);
     font-size: 2rem;
-    color: var(--green);
+    color: #00ff00;
     animation: bounce 2s infinite;
     cursor: pointer;
 }
@@ -86,13 +86,13 @@ h2 {
     bottom: 20px;
     width: 30px;
     height: 30px;
-    background-color: var(--gray);
+    background-color: #C8B49E;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    color: var(--fg);
+    color: #262624;
 }
 
 #info-circle {
@@ -107,8 +107,8 @@ h2 {
 #replay-tooltip {
     position: absolute;
     bottom: 60px;
-    background-color: var(--surface-color);
-    color: var(--text-secondary);
+    background-color: var(--surface);
+    color: var(--fg-muted);
     padding: 10px;
     border-radius: 5px;
     max-width: 400px;
@@ -130,7 +130,7 @@ h2 {
 
 /* About Me */
 #about-me {
-    background-color: var(--surface-color);
+    background-color: var(--surface);
     padding: 2rem;
     border-radius: 10px;
     margin-bottom: 2rem;
@@ -161,11 +161,11 @@ h2 {
 
 #about-social-links .social-link {
     font-size: 1.7rem;
-    color: var(--fg3);
+    color: var(--fg-muted);
 }
 
 #about-social-links .social-link:hover {
-    color: var(--blue);
+    color: var(--accent);
 }
 
 #profile-image {
@@ -173,7 +173,7 @@ h2 {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--fg3);
+    border: 3px solid var(--fg-muted);
 }
 
 /* Blog Posts */
@@ -181,7 +181,7 @@ h2 {
     margin-top: 2rem;
 }
 #blog-posts h2 {
-    border-bottom: 2px solid var(--fg2);
+    border-bottom: 2px solid var(--border);
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
     display: flex;
@@ -191,12 +191,12 @@ h2 {
 
 .rss-link {
     font-size: 1.2rem;
-    color: var(--fg3);
+    color: var(--fg-muted);
     transition: color 0.3s ease;
 }
 
 .rss-link:hover {
-    color: var(--orange);
+    color: var(--accent);
 }
 
 .blog-post-link {
@@ -216,7 +216,7 @@ h2 {
 
 .blog-post {
     display: flex;
-    background-color: var(--surface-color);
+    background-color: var(--surface);
     border-radius: 8px;
     margin-bottom: 1.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -250,19 +250,19 @@ h2 {
 
 .post-date {
     font-size: 0.9rem;
-    color: var(--fg3);
+    color: var(--fg-muted);
     margin-bottom: 0.5rem;
     font-weight: bold;
 }
 
 .post-title {
     margin: 0 0 0.75rem 0;
-    color: var(--blue);
+    color: var(--accent);
 }
 
 .post-summary {
     font-size: 1.1rem;
-    color: var(--text-secondary);
+    color: var(--fg-muted);
     margin: 0;
     line-height: 1.5;
 }

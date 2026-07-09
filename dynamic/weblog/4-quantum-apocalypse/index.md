@@ -1,10 +1,6 @@
 # Quantum Apocalypse?
 
-Quantum computers are rapidly transitioning from science fiction to reality, and the concern that they may soon be capable of breaking a significant portion of today's cryptographic algorithms is growing. In response to this threat, [NIST finalized the standardization of three post-quantum secure algorithms in August 2024](<](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards)>). However, due to its cutting-edge nature, the discourse surrounding quantum computing is often fraught with buzzwords, myths and fearmongering. In this blog post, I will equip you with the tools to develop your own intuition and technical understanding of these topics, enabling you to make up your own mind.
-
-This post accompanies my session at [BaselOne](https://baselone.org/) from 2024-10-17. You can find the PDF of my slides here:
-
-[![Click here to view the Slides as PDF](img/slides-thumbnail.webp)](https://codeberg.org/pascscha/weblog/media/branch/main/dynamic/weblog/4-quantum-apocalypse/assets/Pascal-Schaerli_Quantum-Apocalypse.pdf)
+Quantum computers are rapidly transitioning from science fiction to reality, and the concern that they may soon be capable of breaking a significant portion of today's cryptographic algorithms is growing. In response to this threat, [NIST finalized the standardization of three post-quantum secure algorithms in August 2024](<](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards)>). However, due to its cutting-edge nature, the discourse surrounding quantum computing is often fraught with buzzwords, myths and fearmongering. In this blog post, I will equip you with the tools to develop your own intuition and technical understanding of these topics, enabling you to make up your own mind. This post accompanies my session at [BaselOne](https://baselone.org/) from 2024-10-17. You can find the PDF of my slides [here](https://codeberg.org/pascscha/weblog/media/branch/main/dynamic/weblog/4-quantum-apocalypse/assets/Pascal-Schaerli_Quantum-Apocalypse.pdf)
 
 <socials/>
 
