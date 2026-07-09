@@ -232,50 +232,6 @@ pre code.hljs {
     color: var(--blue);
 }
 
-.big-button {
-    display: block;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    text-align: center;
-    background-color: var(--blue);
-    color: var(--bg);
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.big-button:hover {
-    background-color: var(--aqua);
-}
-
-#footer-links {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-}
-
-.footer-sep {
-    opacity: 0.5;
-}
-
-.rss-link {
-    font-size: 1.2rem;
-    color: var(--fg3);
-    transition: color 0.3s ease;
-}
-
-.rss-link:hover {
-    color: var(--orange);
-}
-
-/* Ensure color consistency on mobile */
-@media (max-width: 768px) {
-    .social-share-link {
-        color: var(--text-secondary);
-    }
-}
-
 .share-button {
     position: relative;
 }

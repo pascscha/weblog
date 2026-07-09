@@ -86,27 +86,6 @@ async function minifyStaticFiles(directory) {
   }
 }
 
-const imageWithCaptionExtension = {
-  type: 'output',
-  filter: function (text) {
-    const $ = cheerio.load(text);
-
-    $('img').each((i, elem) => {
-      const $img = $(elem);
-      const alt = $img.attr('alt');
-
-      // Only wrap images that have alt text
-      if (alt) {
-        $img.attr('loading', 'lazy'); // Add lazy loading
-        $img.wrap('<div class="image-container"></div>');
-        $img.after(`<div class="image-description">${alt}</div>`);
-      }
-    });
-
-    return $.html();
-  }
-};
-
 // Socials marker replacement
 function replaceSocialsMarker(html, socials, templateFile) {
   if (!socials) return html;
