@@ -4,7 +4,7 @@
     "description": "Pascal Schärli's latest research and projects on cryptography and cyber security.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#262624",
+    "background_color": "#242424",
     "theme_color": "#3a3835",
     "icons": [
         {

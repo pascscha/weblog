@@ -9,9 +9,13 @@
         },
         {
             "timestamp": 1688421664,
-            "title": "Finding 19 Vulnerabilities in one Messenger",
-            "description": "For my masters thesis I reviewed the cryptography of the Sharekey messenger app. I found many issues, and this post shows the most fun ones.",
+            "title": "Sharekey Cryptography Review",
+            "description": "During my master thesis I reviewed the cryptography of the end-to-end encrypted Sharekey collaboration app. This post covers the most interesting issues I found.",
             "link": "/weblog/2-sharekey-cryptography-review/",
+            "attribution": {
+                "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+                "label": "my_watercolor_sketchbook"
+            },
             "socials": {
                 "linkedin": "https://www.linkedin.com/posts/pascscha_github-cyber-defence-campussharekey-review-activity-7069949930185879552-V7JH",
                 "github": "https://github.com/cyber-defence-campus/sharekey-review"

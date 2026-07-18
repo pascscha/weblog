@@ -466,7 +466,7 @@ async function generateRedirects(inventory, outputRoot) {
   <meta property="og:url" content="https://schaerli.org${post.link}">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
-  <style>body{background:#262624;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
+  <style>body{background:#242424;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
 </head>
 <body>
   <p>Redirecting to <a href="${post.link}">${escapeXml(post.title)}</a></p>
@@ -631,7 +631,7 @@ async function processPdfFiles(outputDir) {
 <html lang="en">
 <head>
   <meta http-equiv="refresh" content="0; url=${githubPath}">
-  <style>body{background:#262624;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
+  <style>body{background:#242424;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
 </head>
 <body>
   <p>Redirecting to <a href="${githubPath}">${githubPath}</a></p>
