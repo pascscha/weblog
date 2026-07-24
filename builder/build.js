@@ -276,6 +276,44 @@ async function processPages(pages, root, outputRoot, templateFile) {
   }
 }
 
+async function processPostSubdirs(postContentDir, postOutputDir, currentPath, pageTemplateFile) {
+  const entries = await fs.readdir(postContentDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+
+    const subdir = entry.name;
+    const subdirInput = path.join(postContentDir, subdir);
+    const subdirOutput = path.join(postOutputDir, subdir);
+    const subdirMd = path.join(subdirInput, 'index.md');
+
+    let hasIndexMd = false;
+    try { await fs.access(subdirMd); hasIndexMd = true; } catch {}
+
+    if (hasIndexMd) {
+      const mdContent = await fs.readFile(subdirMd, 'utf-8');
+      const title = mdContent.match(/^#\s+(.+)/m)?.[1].trim() || subdir;
+
+      await convertMarkdownToHtml(subdirMd, pageTemplateFile, path.join(subdirOutput, 'index.html'), {
+        title,
+        description: title,
+        current_path: currentPath + subdir + '/',
+        socials: '',
+        dirname: subdir,
+        isPost: false
+      });
+
+      const htmlMdFile = path.join(subdirOutput, 'index.html.md');
+      await fs.rename(path.join(subdirOutput, 'index.md'), htmlMdFile);
+      await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
+
+      console.log(`  Processed sub-page: ${title} → ${subdirOutput}`);
+    }
+
+    await processPostSubdirs(subdirInput, subdirOutput, currentPath + subdir + '/', pageTemplateFile);
+  }
+}
+
 async function copyDirectory(src, dest) {
   try {
     await fs.mkdir(dest, { recursive: true });
@@ -297,7 +335,7 @@ async function copyDirectory(src, dest) {
   }
 }
 
-async function processInventory(inventory, templateFile, root, outputRoot) {
+async function processInventory(inventory, templateFile, root, outputRoot, pageTemplateFile) {
   try {
     // Process each entry
     for (let i = 0; i < inventory.length; i++) {
@@ -325,6 +363,8 @@ async function processInventory(inventory, templateFile, root, outputRoot) {
       const htmlMdFile = outputFile.replace(/\.html$/, '.html.md');
       await fs.rename(outputFile.replace(/\.html$/, '.md'), htmlMdFile);
       await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
+
+      await processPostSubdirs(inputFolder, outputFolder, entry.link, pageTemplateFile);
 
       console.log(`Processed: ${entry.title}`, outputFile);
     }
@@ -745,7 +785,7 @@ async function main() {
     const futurePosts = posts.filter(p => p.timestamp * 1000 > now || p.draft);
 
     // Generate individual posts (current only)
-    await processInventory(currentPosts, postTemplateFile, options.root, options.output);
+    await processInventory(currentPosts, postTemplateFile, options.root, options.output, pageTemplateFile);
 
     // Process future posts as previews
     if (futurePosts.length > 0) {
@@ -781,6 +821,9 @@ async function main() {
           const htmlMdFile = outputFile.replace(/\.html$/, '.html.md');
           await fs.rename(outputFile.replace(/\.html$/, '.md'), htmlMdFile);
           await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
+
+          await processPostSubdirs(inputFolder, outputFolder, `/${previewPath}`, pageTemplateFile);
+
           console.log(`Processed preview: ${entry.title} → /${previewPath}`);
         }
 
