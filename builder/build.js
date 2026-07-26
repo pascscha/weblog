@@ -344,6 +344,7 @@ async function processInventory(inventory, templateFile, root, outputRoot, pageT
         ...entry,
         date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
         current_path: entry.link,
+        social_preview_img: entry.social_preview ? 'img/social-preview.webp' : 'img/banner.webp',
         prev_link: i > 0 ? inventory[i - 1].link : '#',
         prev_title: i > 0 ? `← ${inventory[i - 1].title}` : '',
         next_link: i < inventory.length - 1 ? inventory[i + 1].link : '#',
@@ -492,6 +493,7 @@ async function generateRedirects(inventory, outputRoot) {
       await fs.mkdir(redirectDir, { recursive: true });
 
       const redirectPath = path.join(redirectDir, 'index.html');
+      const socialPreviewImg = post.social_preview ? 'img/social-preview.webp' : 'img/banner.webp';
       const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
@@ -502,7 +504,7 @@ async function generateRedirects(inventory, outputRoot) {
   <title>${escapeXml(post.title)}</title>
   <meta property="og:title" content="${escapeXml(post.title)}">
   <meta property="og:description" content="${escapeXml(post.description)}">
-  <meta property="og:image" content="https://schaerli.org${post.link}img/banner.webp">
+  <meta property="og:image" content="https://schaerli.org${post.link}${socialPreviewImg}">
   <meta property="og:url" content="https://schaerli.org${post.link}">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
@@ -784,6 +786,12 @@ async function main() {
     const currentPosts = posts.filter(p => p.timestamp * 1000 <= now && !p.draft);
     const futurePosts = posts.filter(p => p.timestamp * 1000 > now || p.draft);
 
+    // Enrich posts with social_preview flag
+    for (const post of [...currentPosts, ...futurePosts]) {
+      const postDir = path.join(options.root, post.link.replace(/^\//, ''));
+      post.social_preview = fsSync.existsSync(path.join(postDir, 'img', 'social-preview.webp'));
+    }
+
     // Generate individual posts (current only)
     await processInventory(currentPosts, postTemplateFile, options.root, options.output, pageTemplateFile);
 
@@ -806,6 +814,7 @@ async function main() {
             date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
             current_path: `/${previewPath}`,
             preview: true,
+            social_preview_img: entry.social_preview ? 'img/social-preview.webp' : 'img/banner.webp',
             prev_link: fullIdx > 0 ? posts[fullIdx - 1].link : '#',
             prev_title: fullIdx > 0 ? `← ${posts[fullIdx - 1].title}` : '',
             next_link: fullIdx < posts.length - 1 ? posts[fullIdx + 1].link : '#',
