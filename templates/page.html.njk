@@ -26,14 +26,16 @@
     <link rel="canonical" href="https://schaerli.org{{ current_path }}">
     <meta property="og:title" content="{{ title }}">
     <meta property="og:description" content="{{ description }}">
-    <meta property="og:image" content="https://schaerli.org{{ current_path }}img/banner.webp">
     <meta property="og:url" content="https://schaerli.org{{ current_path }}">
     <meta property="og:site_name" content="Pascal Schärli">
     <meta property="og:locale" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ title }}">
     <meta name="twitter:description" content="{{ description }}">
-    <meta name="twitter:image" content="https://schaerli.org{{ current_path }}img/banner.webp">
+    {% if social_preview_img %}
+    <meta property="og:image" content="https://schaerli.org{{ current_path }}{{ social_preview_img }}">
+    <meta name="twitter:image" content="https://schaerli.org{{ current_path }}{{ social_preview_img }}">
+    {% endif %}
 
     <link rel="preload" href="/css/fontawesome-all.css" as="style" onload="this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/fontawesome-all.css">
@@ -67,7 +69,7 @@
             <a href="mailto:pascal@schaerli.org" class="social-link" title="Email">
                 <i class="fas fa-envelope"></i>
             </a>
-            <a href="https://codeberg.org/pascscha/weblog" class="social-link" title="Codeberg">
+            <a href="https://github.com/pascscha/weblog" class="social-link" title="GitHub">
                 <i class="fab fa-git-alt"></i>
             </a>
             <a href="https://mastodon.social/@pascscha" class="social-link" title="Mastodon">

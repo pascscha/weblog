@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated: 2026-06-26** ([history](https://codeberg.org/pascscha/weblog/commits/main/dynamic/privacy/index.md))
+**Last updated: 2026-08-02** ([history](https://github.com/pascscha/weblog/commits/main/content/privacy/index.md))
 
 Your privacy is important to me. Unlike big faceless corporations that start their privacy policies with this statement, I actually mean it. This policy explains what information is collected when you visit [schaerli.org](https://schaerli.org), how it's handled, and your rights. Since this is a static website with no backend processing, data collection is minimal.
 
@@ -58,11 +58,11 @@ While some features (theme switching, homepage animations, table of contents) re
 
 ### Minified Files
 
-HTML, CSS, and JavaScript files are minified for faster loading. Each minified file links to its original version, and the complete source code is available in my [Codeberg repository](https://codeberg.org/pascscha/weblog) (GPLv3 licensed).
+HTML, CSS, and JavaScript files are minified for faster loading. Each minified file links to its original version, and the complete source code is available in my [GitHub repository](https://github.com/pascscha/weblog) (GPLv3 licensed).
 
 ### Policy Updates
 
-Changes to this policy will be posted here with updated effective dates. I encourage periodic review to stay informed. You can also see the history of this policy on [Codeberg](https://codeberg.org/pascscha/weblog/commits/main/dynamic/privacy/index.md).
+Changes to this policy will be posted here with updated effective dates. I encourage periodic review to stay informed. You can also see the history of this policy on [GitHub](https://github.com/pascscha/weblog/commits/main/content/privacy/index.md).
 
 ### Contact
 

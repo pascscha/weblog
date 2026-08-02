@@ -239,6 +239,16 @@ async function convertMarkdownToHtml(markdownFile, templateFile, outputFile, con
   }
 }
 
+async function getSocialPreviewImg(inputFolder) {
+  for (const candidate of ['img/social-preview.webp', 'img/banner.webp']) {
+    try {
+      await fs.access(path.join(inputFolder, candidate));
+      return candidate;
+    } catch {}
+  }
+  return '';
+}
+
 async function processPages(pages, root, outputRoot, templateFile) {
   try {
 
@@ -261,7 +271,8 @@ async function processPages(pages, root, outputRoot, templateFile) {
         current_path: '/' + page.dirName + '/',
         socials: '',
         dirname: page.dirName,
-        isPost: false
+        isPost: false,
+        social_preview_img: await getSocialPreviewImg(inputFolder)
       };
 
       await convertMarkdownToHtml(markdownFile, templateFile, outputFile, context);
@@ -300,7 +311,8 @@ async function processPostSubdirs(postContentDir, postOutputDir, currentPath, pa
         current_path: currentPath + subdir + '/',
         socials: '',
         dirname: subdir,
-        isPost: false
+        isPost: false,
+        social_preview_img: await getSocialPreviewImg(subdirInput)
       });
 
       const htmlMdFile = path.join(subdirOutput, 'index.html.md');
@@ -633,7 +645,7 @@ when you do so.
 
     content += `\n## Source Code
 
-The code to build the website is open-source at https://codeberg.org/pascscha/weblog
+The code to build the website is open-source at https://github.com/pascscha/weblog
 `;
 
     const outputFile = path.join(outputRoot, 'llms.txt');

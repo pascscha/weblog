@@ -8,7 +8,7 @@ A lightweight, markdown-based static site generator designed to transform techni
 
 - **No external dependencies & private**. Everything is bundled, no requests to CDNs, no cookies, everything works even with JavaScript disabled, every post can be read as index.html.md as pure markdown.
 
-- **Optimization Tools**. HTML, CSS, and JS minification with source maps, unminified copies with attribution links, CSS font-display tuning for faster paint, Font Awesome deferred via preload and swap, PDF to Codeberg Pages redirect system, and favicon generation from a template PNG.
+- **Optimization Tools**. HTML, CSS, and JS minification with source maps, unminified copies with attribution links, CSS font-display tuning for faster paint, Font Awesome deferred via preload and swap, PDF to GitHub redirect system, and favicon generation from a template PNG.
 
 - **Publishing Automation**. RSS feed generation, XML sitemap and sitemap index creation, `llms.txt` generation for AI content discovery, short URL redirect pages for blogs, and a draft/preview system with HMAC-signed URLs.
 
