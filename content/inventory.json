@@ -60,6 +60,22 @@
                 "linkedin": "https://www.linkedin.com/posts/pascscha_protonmail-says-privacy-isnt-a-promise-share-7475188752290779136-URiH/",
                 "reddit": "https://www.reddit.com/r/ProtonMail/comments/1udieku/protons_crypto_is_not_transparent_and_not_opaque/"
             }
+        },
+        {
+            "timestamp": 1790935888,
+            "title": "Post-Quantum Crypto Won't Fix Your Architecture",
+            "description": "Adding PQC to this product was like installing a vault door on a tent. The server could intercept your keys and an RCE let attackers run code on your desktop.",
+            "link": "/weblog/6-internxt/",
+            "keywords": "Pascal Schärli, Internxt, Post-Quantum Cryptography, Responsible Disclosure",
+            "attribution": {
+                "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+                "label": "my_watercolor_sketchbook"
+            },
+            "socials": {
+                "mastodon": "https://mastodon.social/@pascscha/",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/",
+                "linkedin": "https://www.linkedin.com/in/pascscha/"
+            }
         }
     ],
     "page": [
