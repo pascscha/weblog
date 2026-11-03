@@ -76,6 +76,23 @@
                 "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mwv5kqke6s2f",
                 "linkedin": "https://www.linkedin.com/posts/pascscha_i-responsibly-disclosed-several-vulnerabilities-share-7511732456681684993-xXK8/"
             }
+        },
+        {
+            "timestamp": 1793703333,
+            "title": "Filen's password onion made me cry",
+            "description": "Filen hashes passwords with MD5(MD4(MD2(pwd))). This post shows several cryptographic weaknesses in their protocol and questions if it's even worth doing end-to-end encryption delivered through a webpage.",
+            "link": "/weblog/7-filen/",
+            "keywords": "Pascal Schärli, Filen, MD2, MD4, password hashing, crypto agility, end-to-end encryption, Responsible Disclosure",
+            "attribution": {
+                "url": "https://www.instagram.com/my_watercolor_sketchbook/",
+                "label": "my_watercolor_sketchbook"
+            },
+            "draft": false,
+            "socials": {
+                "mastodon": "https://mastodon.social/@pascscha/117552219962063818",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mzfpmvz2us2y",
+                "linkedin": "https://www.linkedin.com/posts/pascscha_cryptography-infosec-privacy-share-7523341156777369600-VwKP/"
+            }
         }
     ],
     "page": [

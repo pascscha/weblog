@@ -1,0 +1,13 @@
+  <path d="M 245,42 C 245,54 24,48 24,62 L 24,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a1" />
+  <path d="M 245,42 C 245,54 58,48 58,62 L 58,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a2" />
+  <path d="M 245,42 C 245,54 92,48 92,62 L 92,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a3" />
+  <path d="M 245,42 C 245,54 126,48 126,62 L 126,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a4" />
+  <path d="M 245,42 C 245,54 160,48 160,62 L 160,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a5" />
+  <path d="M 245,42 C 245,54 194,48 194,62 L 194,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a6" />
+  <path d="M 245,42 C 245,54 228,48 228,62 L 228,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a7" />
+  <path d="M 245,42 C 245,54 262,48 262,62 L 262,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a8" />
+  <path d="M 245,42 C 245,54 296,48 296,62 L 296,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a9" />
+  <path d="M 245,42 C 245,54 330,48 330,62 L 330,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a10" />
+  <path d="M 245,42 C 245,54 364,48 364,62 L 364,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a11" />
+  <path d="M 245,42 C 245,54 398,48 398,62 L 398,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a12" />
+  <path d="M 245,42 C 245,54 432,48 432,62 L 432,76" stroke="#4f555e" stroke-width="1" fill="none" marker-end="url(#TriangleStart)" id="a13" />
