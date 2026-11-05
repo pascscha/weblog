@@ -182,21 +182,158 @@ h2 {
 }
 #blog-posts h2 {
     border-bottom: 2px solid var(--border);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
 }
 
-.rss-link {
-    font-size: 1.2rem;
+#blog-posts h2 .btn-icon {
+    margin-bottom: 0.4rem;
+}
+
+/* Category tabs (CSS-only, no JavaScript required) */
+#blog-posts input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    appearance: none;
+}
+
+.tab-labels {
+    display: inline-flex;
+    gap: 0.75rem;
+}
+
+.tab-labels label {
+    position: relative;
+    cursor: pointer;
     color: var(--fg-muted);
+    padding: 0.35rem 1.1rem;
+    border: 2px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.tab-labels label:hover {
+    color: var(--accent);
+}
+
+#tab-post:checked ~ h2 label[for="tab-post"],
+#tab-briefs:checked ~ h2 label[for="tab-briefs"] {
+    color: var(--fg);
+    border-color: var(--border);
+}
+
+/* Bend the section line up into the selected tab */
+#tab-post:checked ~ h2 label[for="tab-post"]::after,
+#tab-briefs:checked ~ h2 label[for="tab-briefs"]::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background-color: var(--bg);
+}
+
+#tab-post:focus-visible ~ h2 label[for="tab-post"],
+#tab-briefs:focus-visible ~ h2 label[for="tab-briefs"] {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+/* Meta row below the tab line */
+#tab-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tab-feed {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+}
+
+.tab-feed-icon {
+    color: var(--fg-muted);
+    font-size: 1.05rem;
+    text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.rss-link:hover {
+.tab-feed-icon:hover {
     color: var(--accent);
+}
+
+#tab-post:checked ~ #tab-meta .tab-feed-post,
+#tab-briefs:checked ~ #tab-meta .tab-feed-briefs {
+    display: inline-flex;
+}
+
+/* Panels */
+.panel {
+    display: none;
+}
+
+#tab-post:checked ~ .panel-post,
+#tab-briefs:checked ~ .panel-briefs {
+    display: block;
+}
+
+/* Briefs list */
+.brief-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background-color: var(--surface);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.brief-link:hover {
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.brief-date {
+    color: var(--fg-muted);
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.brief-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.brief-title {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.brief-desc {
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 .blog-post-link {
@@ -300,6 +437,10 @@ h2 {
         border-top-right-radius: 8px;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
+    }
+
+    .brief-link {
+        padding: 1rem;
     }
 
     #content-wrapper {

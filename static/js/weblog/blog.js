@@ -30,6 +30,8 @@ function scrollToHeading(event) {
 
 function generateTOC() {
     const toc = document.getElementById('toc');
+    // Pages without a sidebar (e.g. briefs) skip the TOC but still get clickable headings
+    if (!toc) return;
     const headings = document.querySelectorAll('#rendered-content h2, #rendered-content h3');
     const tocList = document.createElement('ul');
 

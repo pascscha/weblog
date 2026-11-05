@@ -270,38 +270,72 @@
         </div>
 
         <div id="blog-posts">
+            {% for tab in tabs %}
+            <input type="radio" name="home-tab" id="tab-{{ tab.key }}" {% if loop.first %}checked{% endif %}>
+            {% endfor %}
+
             <h2>
-                <span>My Projects</span>
+                <span class="tab-labels">
+                    {% for tab in tabs %}
+                    <label for="tab-{{ tab.key }}">{{ tab.title }}</label>
+                    {% endfor %}
+                </span>
                 <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">
                         <i class="fas fa-circle-half-stroke"></i>
                 </button>
-                <a href="/weblog/rss" class="rss-link" title="RSS Feed">
-                    <i class="fas fa-rss"></i>
-                </a>
             </h2>
 
-            <div class="post-list">
-                {% for post in posts %}
-                <a href="{{ post.link }}" class="blog-post-link">
-                    <article class="blog-post">
-                        <div class="post-image">
-                            <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
-                        </div>
-                        <div class="post-content">
-                            <div class="post-date">
-                                {{ post.date }}
-                            </div>
-                            <h3 class="post-title">
-                                {{ post.title }}
-                            </h3>
-                            <p class="post-summary">
-                                {{ post.description }}
-                            </p>
-                        </div>
-                    </article>
-                </a>
+            <div id="tab-meta">
+                {% for tab in tabs %}
+                <span class="tab-feed tab-feed-{{ tab.key }}">
+                    <span>{{ tab.description }}</span>
+                    <a href="/{{ tab.rssPath }}" class="tab-feed-icon" title="{{ tab.title }} RSS Feed">
+                        <i class="fas fa-rss"></i>
+                    </a>
+                </span>
                 {% endfor %}
             </div>
+
+            {% for tab in tabs %}
+            <div class="panel panel-{{ tab.key }}" id="panel-{{ tab.key }}">
+                {% if tab.key == 'post' %}
+                <div class="post-list">
+                    {% for post in tab.items %}
+                    <a href="{{ post.link }}" class="blog-post-link">
+                        <article class="blog-post">
+                            <div class="post-image">
+                                <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
+                            </div>
+                            <div class="post-content">
+                                <div class="post-date">
+                                    {{ post.date }}
+                                </div>
+                                <h3 class="post-title">
+                                    {{ post.title }}
+                                </h3>
+                                <p class="post-summary">
+                                    {{ post.description }}
+                                </p>
+                            </div>
+                        </article>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% elseif tab.key == 'briefs' %}
+                <div class="brief-list">
+                    {% for brief in tab.items %}
+                    <a href="{{ brief.link }}" class="brief-link">
+                        <span class="brief-date">{{ brief.date }}</span>
+                        <span class="brief-body">
+                            <span class="brief-title">{{ brief.title }}</span>
+                            <span class="brief-desc">{{ brief.description }}</span>
+                        </span>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
     </main>
 

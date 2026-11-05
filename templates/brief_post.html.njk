@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}">
+    <meta name="keywords" content="{{ keywords | default('Pascal Schärli, cyber security, cryptography, encryption, research, ETH Zürich') }}">
+    {% if preview %}<meta name="robots" content="noindex, nofollow"><meta name="referrer" content="no-referrer">{% endif %}
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/img/favicon/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/img/favicon/favicon-64x64.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/img/favicon/favicon-128x128.png">
+    <link rel="icon" type="image/png" sizes="152x152" href="/img/favicon/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/favicon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/favicon/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="1024x1024" href="/img/favicon/favicon-1024x1024.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- SEO -->
+    <link rel="canonical" href="https://schaerli.org{{ current_path }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    {% if social_preview_img %}
+    <meta property="og:image" content="https://schaerli.org{{ current_path }}{{ social_preview_img }}">
+    <meta name="twitter:image" content="https://schaerli.org{{ current_path }}{{ social_preview_img }}">
+    {% else %}
+    <meta property="og:image" content="https://schaerli.org/img/social-preview.webp">
+    <meta name="twitter:image" content="https://schaerli.org/img/social-preview.webp">
+    {% endif %}
+    <meta property="og:url" content="https://schaerli.org{{ current_path }}">
+    <meta property="og:site_name" content="Pascal Schärli">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+
+    <link rel="alternate" type="text/markdown" href="https://schaerli.org{{ current_path }}index.html.md">
+    <link rel="alternate" type="application/rss+xml" title="{{ rss_title }}" href="/{{ rss_path }}">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "{{ title }}",
+      "description": "{{ description }}",
+      "image": "{% if social_preview_img %}https://schaerli.org{{ current_path }}{{ social_preview_img }}{% else %}https://schaerli.org/img/social-preview.webp{% endif %}",
+      "datePublished": "{{ date }}",
+      "dateModified": "{{ date }}",
+      "author": {
+        "@type": "Person",
+        "name": "Pascal Schärli",
+        "jobTitle": "Cryptography Engineer",
+        "url": "https://schaerli.org"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Pascal Schärli",
+        "url": "https://schaerli.org"
+      },
+      "url": "https://schaerli.org{{ current_path }}"
+    }
+    </script>
+
+    <link rel="preload" href="/css/fontawesome-all.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/fontawesome-all.css">
+    <link rel="preload" href="/css/highlight-atom-one-dark.css" as="style">
+    <link rel="stylesheet" href="/css/highlight-atom-one-dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/blog.css">
+</head>
+
+<body>
+    <header>
+        <nav><div class="nav-left"><a href="/" class="home-link" title="Home"><span class="site-title home-link">Pascal Schärli</span></a></div>
+        <button id="theme-toggle" class="btn-icon" aria-label="Toggle dark mode">
+                <i class="fas fa-circle-half-stroke"></i>
+        </button>
+        <div class="nav-right"><a href="/" class="home-link" title="Home"><i class="fas fa-home"></i></a></div></nav>
+    </header>
+    <main id="content-wrapper" class="no-sidebar">
+        <div id="content">
+            {% if preview %}
+            <blockquote class="preview-disclaimer">
+                This brief is a draft scheduled to be released on {{ date }}
+                at https://schaerli.org{{ link }}. It may change before publication. Please do not share publicly.
+            </blockquote>
+            {% endif %}
+
+            <div id="rendered-content">
+                {{ content | safe }}
+            </div>
+
+            <div id="recent-posts-card">
+                <h2>From the Blog</h2>
+                <div class="recent-posts-list">
+                    {% for post in recent_posts %}
+                    <a href="{{ post.link }}" class="recent-post-link">
+                        <span class="recent-post-date">{{ post.date }}</span>
+                        <span class="recent-post-title">{{ post.title }}</span>
+                        <span class="recent-post-image">
+                            <img src="{{ post.thumbnail }}" alt="Thumbnail for {{ post.title }}">
+                            <span class="recent-post-summary">{{ post.description }}</span>
+                        </span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div id="social-links">
+            {% set defaultUrls = {
+                "mastodon": "https://mastodon.social/@pascscha",
+                "bluesky": "https://bsky.app/profile/pascscha.ch",
+                "linkedin": "https://www.linkedin.com/in/pascscha"
+            } %}
+
+            <a href="mailto:pascal@schaerli.org" class="social-link" title="Email" target="_blank">
+                <i class="fas fa-envelope"></i>
+            </a>
+
+            <a href="https://github.com/pascscha/weblog/blob/main/content{{ link }}index.md" class="social-link" title="View source on GitHub" target="_blank">
+                <i class="fab fa-git-alt"></i>
+            </a>
+
+            {% for platform in ["mastodon", "bluesky", "linkedin"] %}
+            {% if socials[platform] %}
+            <a href="{{ socials[platform] }}" class="social-link" title="View on {{ platform | capitalize }}" target="_blank">
+            {% else %}
+            <a href="{{ defaultUrls[platform] }}" class="social-link" title="{{ platform | capitalize }}" target="_blank">
+            {% endif %}
+                <i class="fab fa-{{ platform }}"></i>
+            </a>
+            {% endfor %}
+
+            <a href="/{{ rss_path }}" class="social-link" title="RSS Feed" target="_blank">
+                <i class="fas fa-rss"></i>
+            </a>
+        </div>
+        <div id="footer-links">
+            <a href="/privacy" class="footer-link">Privacy Policy</a>
+            <span class="footer-sep">|</span>
+            <a href="https://creativecommons.org/licenses/by/4.0/" class="footer-link">License: CC BY 4.0</a>
+        </div>
+    </footer>
+
+    <script src="/js/weblog/blog.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
