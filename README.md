@@ -23,6 +23,12 @@ weblog/
 └── templates/        # Nunjucks templates
 ```
 
+Content is organized in categories. Each category has an entry in the `categories` object of `inventory.json` (tab label, description, URL path, RSS title, and shortlink prefix), plus its own array of entries:
+
+- `post` - long-form blog posts in `content/weblog/`, linked as `/weblog/N-slug/`
+- `briefs` - short security news in `content/briefs/`, linked as `/briefs/slug/` (ordered by date, no numeric prefix)
+- `page` - static pages (error pages, privacy policy) in `content/<dirName>/`
+
 ## Building
 
 Docker Compose configuration is included.
@@ -61,19 +67,22 @@ Run `docker compose up` to generate all static files into `./html/`, which you c
 
 The `title`, `description`, `link`, and `timestamp` fields are required. Optional fields include `draft` (boolean, hides the post from the index), `socials` (per-post social sharing overrides), `attribution` (banner image credit), and `keywords` (SEO and search terms).
 
+The same applies to short posts. Add a Markdown file at `content/briefs/new-brief/index.md` and an entry to the `briefs` array in `content/inventory.json`, with the link pointing to `/briefs/new-brief/`. Briefs use the simple page layout (no banner, no table of contents), show up in the Briefs tab on the main page, and get their own feed at `/briefs/rss`. Unlike posts they have no shortlink redirects, just the long URLs. Moving an entry between categories is done with a `redirect` field on a stub entry in the old category, which keeps the old URL alive. Long posts keep `/weblog/rss` and `/N/` shortlinks.
+
 The builder also creates an `index.html.md` copy of each post with a CC BY 4.0 license footer for direct Markdown access. This file is advertised in `llms.txt` and in each post's `<link rel="alternate" type="text/markdown">` tag.
 
 ### Drafts and Previews
 
-Posts with a future timestamp or `"draft": true` are excluded from the public index and RSS feed. Instead they are rendered at a preview URL using an HMAC-based path like `/preview/<hmac>/`. These URLs are technically public but practically unguessable unless the link is deliberately shared. This requires a `PREVIEW_SECRET` set in `.env`.
+Posts and briefs with a future timestamp or `"draft": true` are excluded from the public index and RSS feeds. Instead they are rendered at a preview URL using an HMAC-based path like `/preview/<hmac>/`. These URLs are technically public but practically unguessable unless the link is deliberately shared. This requires a `PREVIEW_SECRET` set in `.env`.
 
 ### Modifying Templates
 
 Edit Nunjucks files in `templates/`
 
 - `page.html.njk` - Basic page layout
-- `weblog_index.html.njk` - Blog listings
+- `weblog_index.html.njk` - Home page with category tabs
 - `weblog_post.html.njk` - Post detail view
+- `brief_post.html.njk` - Brief detail view
 - `socials_cta.njk` - Per-post social sharing buttons
 
 ## License

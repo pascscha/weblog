@@ -1,11 +1,26 @@
 {
+    "categories": {
+        "post": {
+            "title": "Main Blog",
+            "description": "In-depth posts about cryptography and security.",
+            "path": "weblog",
+            "redirectPrefix": "",
+            "rssTitle": "Pascal Schärli"
+        },
+        "briefs": {
+            "title": "Briefs",
+            "description": "Short security news, published more frequently.",
+            "path": "briefs",
+            "rssTitle": "Pascal Schärli (Briefs)"
+        }
+    },
     "post": [
         {
             "timestamp": 1606863632,
             "title": "ETH Study Materials",
             "description": "A collection of study material I created back when I was tutoring Computer Science at ETH Zürich",
             "link": "/weblog/1-eth-study-materials/",
-            "socials": {}
+            "redirect": "/briefs/eth-study-materials/"
         },
         {
             "timestamp": 1688421664,
@@ -92,6 +107,56 @@
                 "mastodon": "https://mastodon.social/@pascscha/117552219962063818",
                 "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mzfpmvz2us2y",
                 "linkedin": "https://www.linkedin.com/posts/pascscha_cryptography-infosec-privacy-share-7523341156777369600-VwKP/"
+            }
+        }
+    ],
+    "briefs": [
+        {
+            "timestamp": 1606863632,
+            "title": "ETH Study Materials",
+            "description": "Welcome to my collection of ETH Zürich study materials. As a former tutor at ETH, I've created resources for two Computer Science courses in the Electrical Engineering and Mechanical Engineering bachelor programs.",
+            "link": "/briefs/eth-study-materials/",
+            "socials": {}
+        },
+        {
+            "timestamp": 1751575838,
+            "title": "When Giants Use Toothpicks",
+            "description": "Fireblocks is a digital asset custody platform, protecting trillions of dollars. During a security review at work I found how they protect their 4096-bit RSA 'disaster recovery' keys for customers with 2 rounds of MD5.",
+            "link": "/briefs/when-giant-use-toothpicks/",
+            "socials": {
+                "mastodon": "https://mastodon.social/@pascscha/114791274168559919",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/post/3lt3m4efyuc26"
+            }
+        },
+        {
+            "timestamp": 1772228869,
+            "title": "What Comes After X.509",
+            "description": "X.509 certificates have run the web for three decades. Quantum computers might be what finally kills them. Google announces they don't have immediate plans to add support for post-quantum secure X.509 certificates in Chrome in favor of a newer standard.",
+            "link": "/briefs/merkle-tree-certificates/",
+            "socials": {
+                "linkedin": "https://www.linkedin.com/posts/pascscha_cultivating-a-robust-and-efficient-quantum-safe-share-7433266634632368128-65sF/",
+                "mastodon": "https://mastodon.social/@pascscha/116144901198708238",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mfur5i3b3k2k"
+            }
+        },
+        {
+            "timestamp": 1775591623,
+            "title": "33 Months to Q-Day",
+            "description": "The Post-Quantum cryptography timeline of industry leaders just went from \"we have a decade\" to \"we have 33 months.\" Both Google and Cloudflare are now targeting 2029 for full post-quantum security, including authentication, not just encryption.",
+            "link": "/briefs/q-day-timeline/",
+            "socials": {
+                "linkedin": "https://www.linkedin.com/posts/pascscha_postquantum-cryptography-cybersecurity-share-7447371047340793857-MYTd/"
+            }
+        },
+        {
+            "timestamp": 1786980165,
+            "title": "Signal adds Key Transparency",
+            "description": "Signal Messenger just added Key Transparency (KT) for automatic key verification. It's good but a bit timid. I'm comparing their KT with the one used by Proton, where I disclosed some weaknesses earlier this year.",
+            "link": "/briefs/signal-key-transparency/",
+            "socials": {
+                "mastodon": "https://mastodon.social/@pascscha/117111532120708641",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mtbz2dfwm22w",
+                "linkedin": "https://www.linkedin.com/posts/pascscha_signal-messenger-just-added-key-transparency-share-7495134011959382017-wE5j"
             }
         }
     ],

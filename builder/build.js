@@ -347,16 +347,17 @@ async function copyDirectory(src, dest) {
   }
 }
 
-async function processInventory(inventory, templateFile, root, outputRoot, pageTemplateFile) {
+async function processInventory(inventory, templateFile, root, outputRoot, pageTemplateFile, extraContext = {}) {
   try {
     // Process each entry
     for (let i = 0; i < inventory.length; i++) {
       const entry = inventory[i];
       const metadata = {
         ...entry,
+        ...extraContext,
         date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
         current_path: entry.link,
-        social_preview_img: entry.social_preview ? 'img/social-preview.webp' : 'img/banner.webp',
+        social_preview_img: entry.social_preview ? 'img/social-preview.webp' : (entry.has_banner ? 'img/banner.webp' : ''),
         prev_link: i > 0 ? inventory[i - 1].link : '#',
         prev_title: i > 0 ? `← ${inventory[i - 1].title}` : '',
         next_link: i < inventory.length - 1 ? inventory[i + 1].link : '#',
@@ -406,25 +407,28 @@ async function clearDirectory(directory) {
   }
 }
 
-async function generateIndexPage(inventory, templateFile, outputRoot) {
+async function generateIndexPage(categories, templateFile, outputRoot) {
   try {
-    // Sort posts by date (newest first)
-    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
-
-    // Format posts data for the template
-    const posts = sortedPosts.map(post => ({
-      title: post.title,
-      description: post.description,
-      date: dayjs(post.timestamp * 1000).format('YYYY-MM-DD'),
-      link: post.link,
-      thumbnail: `${post.link}img/thumbnail.webp` // Assuming this is your thumbnail path convention
+    // Format entries per category, newest first
+    const tabs = categories.map(category => ({
+      key: category.key,
+      title: category.title,
+      description: category.description,
+      rssPath: `${category.path}/rss`,
+      items: [...category.publishable].sort((a, b) => b.timestamp - a.timestamp).map(entry => ({
+        title: entry.title,
+        description: entry.description,
+        date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
+        link: entry.link,
+        thumbnail: `${entry.link}img/thumbnail.webp` // Assuming this is your thumbnail path convention
+      }))
     }));
 
     // Render template with nunjucks
     const finalHtml = nunjucks.render(templateFile, {
       title: "Pascal Schärli",
       current_path: "/",
-      posts: posts
+      tabs: tabs
     });
 
     // Write the index.html file
@@ -438,7 +442,7 @@ async function generateIndexPage(inventory, templateFile, outputRoot) {
   }
 }
 
-async function generateRssFeed(inventory, outputRoot) {
+async function generateRssFeed(inventory, outputRoot, feedPath, feedTitle) {
   try {
     // Sort posts by date (newest first)
     const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
@@ -449,7 +453,7 @@ async function generateRssFeed(inventory, outputRoot) {
     // Build RSS XML content
     let rssContent = `<?xml version="1.0" encoding="UTF-8" ?><rss version="2.0">
   <channel>
-    <title>Pascal Schärli</title>
+    <title>${escapeXml(feedTitle)}</title>
     <link>https://schaerli.org</link>
     <description>Hi, I'm Pascal. A cyber security master's graduate from ETH Zürich, now a dedicated Cryptography Engineer with a strong passion for coding and scripting.</description>
     <language>en-us</language>
@@ -460,7 +464,7 @@ async function generateRssFeed(inventory, outputRoot) {
     // Add items
     for (const post of sortedPosts) {
       const pubDate = new Date(post.timestamp * 1000).toUTCString();
-      const link = `https://schaerli.org${post.link}/`;
+      const link = `https://schaerli.org${post.link}`;
 
       rssContent += `    <item>
       <title>${escapeXml(post.title)}</title>
@@ -475,12 +479,12 @@ async function generateRssFeed(inventory, outputRoot) {
     rssContent += `  </channel>
 </rss>`;
 
-    // Create weblog directory if it doesn't exist
-    const weblogDir = path.join(outputRoot, 'weblog');
-    await fs.mkdir(weblogDir, { recursive: true });
+    // Create feed directory if it doesn't exist
+    const feedDir = path.dirname(path.join(outputRoot, feedPath));
+    await fs.mkdir(feedDir, { recursive: true });
 
     // Write the RSS file
-    const outputFile = path.join(weblogDir, 'rss');
+    const outputFile = path.join(outputRoot, feedPath);
     await fs.writeFile(outputFile, rssContent);
 
     console.log('Generated RSS feed:', outputFile);
@@ -490,46 +494,53 @@ async function generateRssFeed(inventory, outputRoot) {
   }
 }
 
-// Add this function to generate redirect pages
-async function generateRedirects(inventory, outputRoot) {
-  try {
-    console.log('Generating redirect pages...');
-
-    for (const post of inventory) {
-      // Extract the numeric ID from the link (e.g., "1" from "/weblog/1-study-materials/")
-      const idMatch = post.link.match(/^\/weblog\/(\d+)/);
-      if (!idMatch || !idMatch[1]) continue;
-
-      const id = idMatch[1];
-      const redirectDir = path.join(outputRoot, id);
-      await fs.mkdir(redirectDir, { recursive: true });
-
-      const redirectPath = path.join(redirectDir, 'index.html');
-      const socialPreviewImg = post.social_preview ? 'img/social-preview.webp' : 'img/banner.webp';
-      const htmlContent = `
+// Build a redirect page that forwards to targetUrl (used for shortlinks and moved entries)
+function buildRedirectHtml(title, description, targetUrl, imageUrl) {
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=${post.link}" />
-  <link rel="canonical" href="https://schaerli.org${post.link}" />
-  <title>${escapeXml(post.title)}</title>
-  <meta property="og:title" content="${escapeXml(post.title)}">
-  <meta property="og:description" content="${escapeXml(post.description)}">
-  <meta property="og:image" content="https://schaerli.org${post.link}${socialPreviewImg}">
-  <meta property="og:url" content="https://schaerli.org${post.link}">
+  <meta http-equiv="refresh" content="0; url=${targetUrl}" />
+  <link rel="canonical" href="https://schaerli.org${targetUrl}" />
+  <title>${escapeXml(title)}</title>
+  <meta property="og:title" content="${escapeXml(title)}">
+  <meta property="og:description" content="${escapeXml(description)}">
+  <meta property="og:image" content="${imageUrl}">
+  <meta property="og:url" content="https://schaerli.org${targetUrl}">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
   <style>body{background:#242424;color:#DCD8D0;font-family:system-ui,sans-serif;padding:2rem;text-align:center;display:flex;align-items:center;justify-content:center;min-height:90vh;margin:0}a{color:#5A9BE1}p{max-width:30em}</style>
 </head>
 <body>
-  <p>Redirecting to <a href="${post.link}">${escapeXml(post.title)}</a></p>
+  <p>Redirecting to <a href="${targetUrl}">${escapeXml(title)}</a></p>
 </body>
-</html>
-      `.trim();
+</html>`.trim();
+}
+
+// Add this function to generate redirect pages
+async function generateRedirects(inventory, outputRoot, redirectPrefix = '') {
+  try {
+    console.log('Generating redirect pages...');
+
+    for (const post of inventory) {
+      // Extract the numeric ID from the link (e.g. "1" from "/weblog/1-study-materials/" or "/briefs/1-signal/")
+      const idMatch = post.link.match(/^\/[^/]+\/(\d+)/);
+      if (!idMatch || !idMatch[1]) continue;
+
+      const id = redirectPrefix ? `${redirectPrefix}-${idMatch[1]}` : idMatch[1];
+      const redirectDir = path.join(outputRoot, id);
+      await fs.mkdir(redirectDir, { recursive: true });
+
+      const redirectPath = path.join(redirectDir, 'index.html');
+      const socialPreviewImg = post.social_preview ? `${post.link}img/social-preview.webp`
+        : post.has_banner ? `${post.link}img/banner.webp`
+        : '/img/social-preview.webp';
+      const targetUrl = post.redirect || post.link;
+      const htmlContent = buildRedirectHtml(post.title, post.description, targetUrl, `https://schaerli.org${socialPreviewImg}`);
 
       await fs.writeFile(redirectPath, htmlContent);
-      console.log(`Created redirect for ${id} → ${post.link}`);
+      console.log(`Created redirect for ${id} → ${targetUrl}`);
     }
   } catch (error) {
     console.error('Error generating redirects:', error);
@@ -547,7 +558,7 @@ function escapeXml(unsafe) {
     .replace(/'/g, '&apos;');
 }
 
-async function generateSitemap(inventory, outputRoot) {
+async function generateSitemap(inventory, outputRoot, sitemapPath) {
   try {
     // Sort posts by date (newest first)
     const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
@@ -571,12 +582,12 @@ async function generateSitemap(inventory, outputRoot) {
 
     sitemapContent += `</urlset>`;
 
-    // Create weblog directory if it doesn't exist
-    const weblogDir = path.join(outputRoot, 'weblog');
-    await fs.mkdir(weblogDir, { recursive: true });
+    // Create sitemap directory if it doesn't exist
+    const sitemapDir = path.dirname(path.join(outputRoot, sitemapPath));
+    await fs.mkdir(sitemapDir, { recursive: true });
 
     // Write the sitemap file
-    const outputFile = path.join(weblogDir, 'sitemap.xml');
+    const outputFile = path.join(outputRoot, sitemapPath);
     await fs.writeFile(outputFile, sitemapContent);
 
     console.log('Generated sitemap:', outputFile);
@@ -586,25 +597,31 @@ async function generateSitemap(inventory, outputRoot) {
   }
 }
 
-// Generate the sitemap index that references both the main and post sitemaps
-async function generateSitemapIndex(inventory, outputRoot) {
+// Generate the sitemap index that references the main and per-category sitemaps
+async function generateSitemapIndex(categories, outputRoot) {
   try {
-    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
-    const latestPostDate = sortedPosts.length > 0
-      ? dayjs(sortedPosts[0].timestamp * 1000).format('YYYY-MM-DD')
+    const allEntries = categories.flatMap(category => category.publishable);
+    const sortedEntries = [...allEntries].sort((a, b) => b.timestamp - a.timestamp);
+    const latestPostDate = sortedEntries.length > 0
+      ? dayjs(sortedEntries[0].timestamp * 1000).format('YYYY-MM-DD')
       : dayjs().format('YYYY-MM-DD');
     const buildDate = dayjs().format('YYYY-MM-DD');
+
+    let categoryEntries = '';
+    for (const category of categories) {
+      categoryEntries += `    <sitemap>
+        <loc>https://schaerli.org/${category.path}/sitemap.xml</loc>
+        <lastmod>${latestPostDate}</lastmod>
+    </sitemap>
+`;
+    }
 
     let content = `<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <sitemap>
         <loc>https://schaerli.org/sitemap-main.xml</loc>
         <lastmod>${buildDate}</lastmod>
     </sitemap>
-    <sitemap>
-        <loc>https://schaerli.org/weblog/sitemap.xml</loc>
-        <lastmod>${latestPostDate}</lastmod>
-    </sitemap>
-</sitemapindex>`;
+${categoryEntries}</sitemapindex>`;
 
     const outputFile = path.join(outputRoot, 'sitemap.xml');
     await fs.writeFile(outputFile, content);
@@ -616,9 +633,8 @@ async function generateSitemapIndex(inventory, outputRoot) {
 }
 
 // Generate llms.txt for AI content discovery
-async function generateLlmsTxt(inventory, outputRoot) {
+async function generateLlmsTxt(categories, outputRoot) {
   try {
-    const sortedPosts = [...inventory].sort((a, b) => b.timestamp - a.timestamp);
     const siteUrl = 'https://schaerli.org';
 
     let content = `# schaerli.org
@@ -633,14 +649,17 @@ The content uses a permissive [CC BY 4.0](https://creativecommons.org/licenses/b
 license - you are free to copy and redistribute the material in any medium or format
 for any purpose, even commercially. Just make sure to link back to https://schaerli.org
 when you do so.
-
-## Blog Posts
-
 `;
 
-    for (const post of sortedPosts) {
-      const url = `${siteUrl}${post.link}index.html.md`;
-      content += `- [${post.title}](${url}): ${post.description}\n`;
+    for (const category of categories) {
+      const sortedEntries = [...category.publishable].sort((a, b) => b.timestamp - a.timestamp);
+      if (sortedEntries.length === 0) continue;
+
+      content += `\n## ${category.title}\n\n`;
+      for (const entry of sortedEntries) {
+        const url = `${siteUrl}${entry.link}index.html.md`;
+        content += `- [${entry.title}](${url}): ${entry.description}\n`;
+      }
     }
 
     content += `\n## Source Code
@@ -788,49 +807,117 @@ async function main() {
     // Process inventory
     const inventoryFile = path.join(options.root, 'inventory.json');
     const postTemplateFile = path.join(options.templates, 'weblog_post.html.njk');
+    const briefTemplateFile = path.join(options.templates, 'brief_post.html.njk');
     const indexTemplateFile = path.join(options.templates, 'weblog_index.html.njk');
     const pageTemplateFile = path.join(options.templates, 'page.html.njk');
 
-    const { post: posts, page: pages } = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
+    const { post: posts, page: pages, briefs: briefs = [], categories: categoryConfig = {} } = JSON.parse(await fs.readFile(inventoryFile, 'utf-8'));
 
-    // Separate future posts from current posts
+    // Category definitions: template and extras live in code, labels/paths come from inventory.json
+    const categoryDefs = [
+      { key: 'post', entries: posts, templateFile: postTemplateFile, showsRecentPosts: false },
+      { key: 'briefs', entries: briefs, templateFile: briefTemplateFile, showsRecentPosts: true }
+    ];
+
+    // Separate future/draft entries from current ones, per category
     const now = Date.now();
-    const currentPosts = posts.filter(p => p.timestamp * 1000 <= now && !p.draft);
-    const futurePosts = posts.filter(p => p.timestamp * 1000 > now || p.draft);
+    const splitByVisibility = entries => ({
+      current: entries.filter(p => p.timestamp * 1000 <= now && !p.draft),
+      future: entries.filter(p => p.timestamp * 1000 > now || p.draft)
+    });
 
-    // Enrich posts with social_preview flag
-    for (const post of [...currentPosts, ...futurePosts]) {
-      const postDir = path.join(options.root, post.link.replace(/^\//, ''));
-      post.social_preview = fsSync.existsSync(path.join(postDir, 'img', 'social-preview.webp'));
+    const categories = categoryDefs.map(def => {
+      const cfg = categoryConfig[def.key] || {};
+      const { current, future } = splitByVisibility(def.entries);
+      return {
+        key: def.key,
+        entries: def.entries,
+        templateFile: def.templateFile,
+        showsRecentPosts: def.showsRecentPosts,
+        title: cfg.title || def.key,
+        description: cfg.description || '',
+        path: cfg.path || def.key,
+        redirectPrefix: cfg.redirectPrefix,
+        rssTitle: cfg.rssTitle || 'Pascal Schärli',
+        current,
+        future
+      };
+    });
+
+    // Enrich entries with social preview / banner flags
+    for (const category of categories) {
+      for (const entry of category.entries) {
+        const postDir = path.join(options.root, entry.link.replace(/^\//, ''));
+        entry.social_preview = fsSync.existsSync(path.join(postDir, 'img', 'social-preview.webp'));
+        entry.has_banner = fsSync.existsSync(path.join(postDir, 'img', 'banner.webp'));
+      }
     }
 
-    // Generate individual posts (current only)
-    await processInventory(currentPosts, postTemplateFile, options.root, options.output, pageTemplateFile);
+    // Split off redirect stubs, which only keep an old URL alive and are excluded from feeds and listings
+    for (const category of categories) {
+      category.redirects = category.current.filter(e => e.redirect);
+      category.publishable = category.current.filter(e => !e.redirect);
+    }
 
-    // Process future posts as previews
-    if (futurePosts.length > 0) {
+    // The three most recent long-form posts, shown at the bottom of briefs
+    const postCategory = categories.find(c => c.key === 'post');
+    const recentPosts = [...postCategory.publishable].sort((a, b) => b.timestamp - a.timestamp).slice(0, 3).map(post => ({
+      title: post.title,
+      description: post.description,
+      date: dayjs(post.timestamp * 1000).format('YYYY-MM-DD'),
+      link: post.link,
+      thumbnail: `${post.link}img/thumbnail.webp`
+    }));
+
+    const extraContextFor = category => category.showsRecentPosts
+      ? { recent_posts: recentPosts, rss_path: `${category.path}/rss`, rss_title: category.rssTitle }
+      : {};
+
+    // Generate individual entries (current only)
+    for (const category of categories) {
+      await processInventory(category.publishable, category.templateFile, options.root, options.output, pageTemplateFile, extraContextFor(category));
+    }
+
+    // Keep the old URLs of moved entries alive as redirect pages
+    for (const category of categories) {
+      for (const entry of category.redirects) {
+        const outputFolder = path.join(options.output, entry.link.replace(/^\//, ''));
+        await fs.mkdir(outputFolder, { recursive: true });
+        const imageUrl = entry.social_preview ? `https://schaerli.org${entry.link}img/social-preview.webp`
+          : entry.has_banner ? `https://schaerli.org${entry.link}img/banner.webp`
+          : 'https://schaerli.org/img/social-preview.webp';
+        await fs.writeFile(path.join(outputFolder, 'index.html'), buildRedirectHtml(entry.title, entry.description, entry.redirect, imageUrl));
+        console.log(`Generated redirect: ${entry.link} → ${entry.redirect}`);
+      }
+    }
+
+    // Process future/draft entries as previews
+    const futureEntries = categories.flatMap(category =>
+      category.future.map(entry => ({ entry, category }))
+    );
+    if (futureEntries.length > 0) {
       if (!PREVIEW_SECRET) {
         console.warn('Warning: future posts found but no PREVIEW_SECRET set in .env. Skipping preview rendering.');
       } else {
-        console.log(`Processing ${futurePosts.length} future post(s) as previews...`);
-        for (const entry of futurePosts) {
-          const slug = entry.link.match(/\/([^/]+)\/$/)[1];
-          const hmac = crypto.createHmac('sha256', PREVIEW_SECRET).update(slug).digest('hex');
+        console.log(`Processing ${futureEntries.length} future entr(y/ies) as previews...`);
+        for (const { entry, category } of futureEntries) {
+          const hmac = crypto.createHmac('sha256', PREVIEW_SECRET).update(entry.link).digest('hex');
           const previewPath = `preview/${hmac}/`;
           const outputFolder = path.join(options.output, previewPath);
 
-          // Find index in full posts list for prev/next context
-          const fullIdx = posts.findIndex(e => e.link === entry.link);
+          // Find index in full category list for prev/next context
+          const fullIdx = category.entries.findIndex(e => e.link === entry.link);
           const metadata = {
             ...entry,
+            ...extraContextFor(category),
             date: dayjs(entry.timestamp * 1000).format('YYYY-MM-DD'),
             current_path: `/${previewPath}`,
             preview: true,
-            social_preview_img: entry.social_preview ? 'img/social-preview.webp' : 'img/banner.webp',
-            prev_link: fullIdx > 0 ? posts[fullIdx - 1].link : '#',
-            prev_title: fullIdx > 0 ? `← ${posts[fullIdx - 1].title}` : '',
-            next_link: fullIdx < posts.length - 1 ? posts[fullIdx + 1].link : '#',
-            next_title: fullIdx < posts.length - 1 ? `${posts[fullIdx + 1].title} →` : '',
+            social_preview_img: entry.social_preview ? 'img/social-preview.webp' : (entry.has_banner ? 'img/banner.webp' : ''),
+            prev_link: fullIdx > 0 ? category.entries[fullIdx - 1].link : '#',
+            prev_title: fullIdx > 0 ? `← ${category.entries[fullIdx - 1].title}` : '',
+            next_link: fullIdx < category.entries.length - 1 ? category.entries[fullIdx + 1].link : '#',
+            next_title: fullIdx < category.entries.length - 1 ? `${category.entries[fullIdx + 1].title} →` : '',
           };
 
           const inputFolder = path.join(options.root, entry.link.replace(/^\//, ''));
@@ -838,7 +925,7 @@ async function main() {
           const outputFile = path.join(outputFolder, 'index.html');
 
           await copyDirectory(inputFolder, outputFolder);
-          await convertMarkdownToHtml(markdownFile, postTemplateFile, outputFile, metadata);
+          await convertMarkdownToHtml(markdownFile, category.templateFile, outputFile, metadata);
           const htmlMdFile = outputFile.replace(/\.html$/, '.html.md');
           await fs.rename(outputFile.replace(/\.html$/, '.md'), htmlMdFile);
           await fs.appendFile(htmlMdFile, LICENSE_SUFFIX);
@@ -854,13 +941,18 @@ async function main() {
     // Process static pages (privacy policy, error pages, etc)
     await processPages(pages, options.root, options.output, pageTemplateFile);
 
-    // Generate public pages from current posts only (future posts hidden)
-    await generateIndexPage(currentPosts, indexTemplateFile, options.output);
-    await generateRssFeed(currentPosts, options.output);
-    await generateSitemap(currentPosts, options.output);
-    await generateSitemapIndex(currentPosts, options.output);
-    await generateRedirects(currentPosts, options.output);
-    await generateLlmsTxt(currentPosts, options.output);
+    // Generate public pages from current entries only (future ones hidden)
+    for (const category of categories) {
+      await generateRssFeed(category.publishable, options.output, `${category.path}/rss`, category.rssTitle);
+      await generateSitemap(category.publishable, options.output, `${category.path}/sitemap.xml`);
+      // Categories without a redirectPrefix get no shortlink redirects
+      if (category.redirectPrefix !== undefined) {
+        await generateRedirects(category.current, options.output, category.redirectPrefix);
+      }
+    }
+    await generateIndexPage(categories, indexTemplateFile, options.output);
+    await generateSitemapIndex(categories, options.output);
+    await generateLlmsTxt(categories, options.output);
 
     // Add this new step at the end
     console.log('Processing PDF files...');
