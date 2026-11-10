@@ -6,6 +6,8 @@
     --border: #6b6258;
     --accent: #5A9BE1;
     --warning: #B54E23;
+    --danger: #e05c5c;
+    --border-weak: #46413b;
     --header-bg: #3a3835;
     --header-fg: #D0CCC4;
     --footer-bg: #3a3835;
@@ -21,6 +23,8 @@
     --border: #c4b99e;
     --accent: #265E9B;
     --warning: #B54E23;
+    --danger: #b03a34;
+    --border-weak: #ddd2b8;
     --spacing-md: 1rem;
 }
 

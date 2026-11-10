@@ -133,6 +133,36 @@ pre code.hljs {
     display: none;
 }
 
+/* Tables */
+#rendered-content table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 2rem 0;
+}
+
+#rendered-content th,
+#rendered-content td {
+    text-align: center;
+    padding: 0.5rem 0.6rem;
+    border: none;
+    border-bottom: 1px solid var(--border-weak);
+    overflow-wrap: break-word;
+}
+
+#rendered-content thead th {
+    border-bottom: 2px solid var(--border);
+}
+
+#rendered-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+#rendered-content td strong,
+#rendered-content td strong a {
+    color: var(--danger);
+}
+
 /* Post Navigation */
 #post-navigation {
     display: flex;

@@ -204,6 +204,7 @@ const codeBlockExtension = {
 
 // Initialize showdown converter
 const converter = new showdown.Converter({
+  tables: true,
   extensions: [
     shodownKatex(),
     mediaExtension,

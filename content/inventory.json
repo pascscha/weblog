@@ -158,6 +158,17 @@
                 "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mtbz2dfwm22w",
                 "linkedin": "https://www.linkedin.com/posts/pascscha_signal-messenger-just-added-key-transparency-share-7495134011959382017-wE5j"
             }
+        },
+        {
+            "timestamp": 1794309393,
+            "title": "Electron, we have a problem",
+            "description": "Many Electron apps auto-update without verifying signatures. Many also still trust the compromised eMudhra certificates. Together, that lets an attacker on your network install malware on your machine.",
+            "link": "/briefs/electron-we-have-a-problem/",
+            "socials": {
+                "linkedin": "https://www.linkedin.com/posts/pascscha_electron-we-have-a-problem-many-electron-share-7525881368397008896-3B5d/",
+                "mastodon": "https://mastodon.social/@pascscha/117591916361906263",
+                "bluesky": "https://bsky.app/profile/pascscha.ch/post/3mzxdqruzss2p"
+            }
         }
     ],
     "page": [
